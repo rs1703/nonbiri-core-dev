@@ -1,0 +1,143 @@
+#include <core/extension/extension.h>
+
+using std::string;
+using std::tuple;
+using std::vector;
+
+Extension::Extension()
+{
+#ifdef BASE_URL
+  baseUrl = BASE_URL;
+#endif
+
+#ifdef NAME
+  name = NAME;
+#endif
+
+#ifdef LANGUAGE
+  language = LANGUAGE;
+#endif
+
+#ifdef VERSION
+  version = VERSION;
+#endif
+
+#ifdef USE_API
+  useApi = USE_API;
+#endif
+}
+
+Extension::~Extension()
+{
+  // std::cout << "Extension::~Extension()" << std::endl;
+}
+
+std::string Extension::latestsSelector()
+{
+  return NULL;
+};
+
+std::string Extension::latestsNextSelector()
+{
+  return NULL;
+};
+
+std::string Extension::latestsRequest(int)
+{
+  return NULL;
+};
+
+tuple<vector<Manga *>, bool> Extension::parseLatestEntries(const string &)
+{
+  ErrNotImplemented;
+}
+
+tuple<vector<Manga *>, bool> Extension::parseLatestEntries(CHtml &)
+{
+  ErrNotImplemented;
+}
+
+Manga *Extension::parseLatestEntry(CElement &)
+{
+  ErrNotImplemented;
+}
+
+std::string Extension::searchMangaSelector()
+{
+  return NULL;
+};
+
+std::string Extension::searchMangaNextSelector()
+{
+  return NULL;
+};
+
+std::string Extension::searchMangaRequest(int, const char *)
+{
+  return NULL;
+};
+
+tuple<vector<Manga *>, bool> Extension::parseSearchEntries(const string &)
+{
+  ErrNotImplemented;
+}
+
+tuple<vector<Manga *>, bool> Extension::parseSearchEntries(CHtml &)
+{
+  ErrNotImplemented;
+}
+
+Manga *Extension::parseSearchEntry(CElement &)
+{
+  ErrNotImplemented;
+}
+
+Manga *Extension::parseManga(const string &)
+{
+  ErrNotImplemented;
+}
+
+Manga *Extension::parseManga(CHtml &)
+{
+  ErrNotImplemented;
+}
+
+std::string Extension::chaptersSelector()
+{
+  return NULL;
+};
+
+std::string Extension::chaptersRequest(const Manga &)
+{
+  return NULL;
+};
+
+vector<Chapter *> Extension::parseChapterEntries(const Manga &, const string &)
+{
+  ErrNotImplemented;
+}
+
+vector<Chapter *> Extension::parseChapterEntries(const Manga &, CHtml &)
+{
+  ErrNotImplemented;
+}
+
+Chapter *Extension::parseChapterEntry(const Manga &, CElement &)
+{
+  ErrNotImplemented;
+}
+
+std::string Extension::pagesRequest(const Chapter &)
+{
+  return NULL;
+};
+
+vector<string> Extension::parsePages(const Chapter &, const string &)
+{
+  ErrNotImplemented;
+}
+
+vector<string> Extension::parsePages(const Chapter &, CHtml &)
+{
+  ErrNotImplemented;
+}
