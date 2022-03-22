@@ -26,8 +26,8 @@ Extension::Extension()
   version = VERSION;
 #endif
 
-#ifdef USE_API
-  useApi = USE_API;
+#if USE_API == 1
+  useApi = true;
 #endif
 }
 
