@@ -18,20 +18,14 @@ public:
   CElement(const CElement &element);
   ~CElement();
 
-  std::vector<std::shared_ptr<CElement>> select(const char *selector);
   std::vector<std::shared_ptr<CElement>> select(const std::string &selector);
-
-  std::shared_ptr<CElement> selectFirst(const char *selector);
   std::shared_ptr<CElement> selectFirst(const std::string &selector);
-
-  std::shared_ptr<CElement> selectLast(const char *selector);
   std::shared_ptr<CElement> selectLast(const std::string &selector);
 
   std::shared_ptr<CElement> parent();
   std::shared_ptr<CElement> previous();
   std::shared_ptr<CElement> next();
 
-  std::string attr(const char *name);
   std::string attr(const std::string &name);
 
   std::vector<std::string> classes();
@@ -45,17 +39,11 @@ class CHtml
   CDocument document_;
 
 public:
-  CHtml(const char *document);
   CHtml(const std::string &document);
   ~CHtml();
 
-  std::vector<std::shared_ptr<CElement>> select(const char *selector);
   std::vector<std::shared_ptr<CElement>> select(const std::string &selector);
-
-  std::shared_ptr<CElement> selectFirst(const char *selector);
   std::shared_ptr<CElement> selectFirst(const std::string &selector);
-
-  std::shared_ptr<CElement> selectLast(const char *selector);
   std::shared_ptr<CElement> selectLast(const std::string &selector);
 };
 

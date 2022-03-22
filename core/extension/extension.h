@@ -23,13 +23,18 @@
     return new extension(); \
   }
 
-class Extension
+struct ExtensionInfo
 {
-public:
+  std::string id;
   std::string baseUrl;
   std::string name;
   std::string language;
   std::string version;
+};
+
+class Extension : public ExtensionInfo
+{
+public:
   bool useApi;
 
 public:
@@ -45,7 +50,7 @@ public:
 
   virtual std::string searchMangaSelector();
   virtual std::string searchMangaNextSelector();
-  virtual std::string searchMangaRequest(int page, const char *query);
+  virtual std::string searchMangaRequest(int page, const std::string &query);
   virtual std::tuple<std::vector<Manga *>, bool> parseSearchEntries(const std::string &response);
   virtual std::tuple<std::vector<Manga *>, bool> parseSearchEntries(CHtml &html);
   virtual Manga *parseSearchEntry(CElement &element);

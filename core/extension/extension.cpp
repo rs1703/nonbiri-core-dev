@@ -6,6 +6,10 @@ using std::vector;
 
 Extension::Extension()
 {
+#ifdef ID
+  id = ID;
+#endif
+
 #ifdef BASE_URL
   baseUrl = BASE_URL;
 #endif
@@ -72,7 +76,7 @@ std::string Extension::searchMangaNextSelector()
   return NULL;
 };
 
-std::string Extension::searchMangaRequest(int, const char *)
+std::string Extension::searchMangaRequest(int, const std::string &)
 {
   return NULL;
 };
