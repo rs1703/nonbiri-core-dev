@@ -19,9 +19,13 @@
 #endif
 
 #define RegisterExtension(extension) \
-  EXPORT_API std::shared_ptr<extension> create() \
+  const std::shared_ptr<extension> dummyCreate() \
   { \
     return std::make_shared<extension>(); \
+  } \
+  EXPORT_API const std::shared_ptr<extension> create() \
+  { \
+    return dummyCreate(); \
   }
 
 struct ExtensionInfo
