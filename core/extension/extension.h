@@ -1,6 +1,7 @@
 #ifndef NONBIRI_CORE_EXTENSION_EXTENSION_H_
 #define NONBIRI_CORE_EXTENSION_EXTENSION_H_
 
+#include <memory>
 #include <stdexcept>
 #include <string>
 #include <tuple>
@@ -18,9 +19,9 @@
 #endif
 
 #define RegisterExtension(extension) \
-  EXPORT_API Extension *create() \
+  EXPORT_API std::shared_ptr<extension> create() \
   { \
-    return new extension(); \
+    return std::make_shared<extension>(); \
   }
 
 struct ExtensionInfo
