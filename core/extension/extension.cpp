@@ -154,7 +154,7 @@ vector<string> Extension::parsePages(const Chapter &, CHtml &)
   ErrNotImplemented;
 }
 
-std::string Extension::appendBaseUrl(const std::string &path)
+std::string Extension::prependBaseUrl(const std::string &path)
 {
   if (path.find(baseUrl) == 0 || path.find("http") == 0) {
     return path;

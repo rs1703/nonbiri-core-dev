@@ -75,7 +75,7 @@ public:
   virtual std::vector<std::string> parsePages(const Chapter &chapter, CHtml &html);
 
 protected:
-  std::string appendBaseUrl(const std::string &path);
+  std::string prependBaseUrl(const std::string &path);
 };
 
 #endif  // NONBIRI_CORE_EXTENSION_EXTENSION_H_
