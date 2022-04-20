@@ -131,6 +131,11 @@ Chapter *Extension::parseChapterEntry(const Manga &, CElement &)
   ErrNotImplemented;
 }
 
+std::string Extension::pagesRequest(const std::string &url)
+{
+  return NULL;
+}
+
 std::string Extension::pagesRequest(const Chapter &)
 {
   return NULL;
@@ -144,4 +149,18 @@ vector<string> Extension::parsePages(const Chapter &, const string &)
 vector<string> Extension::parsePages(const Chapter &, CHtml &)
 {
   ErrNotImplemented;
+}
+
+std::string Extension::appendBaseUrl(const std::string &path)
+{
+  if (path.find(baseUrl) == 0 || path.find("http") == 0) {
+    return path;
+  }
+
+  std::string result = baseUrl;
+  if (path.front() != '/')
+    result += '/';
+  result += path;
+
+  return result;
 }
