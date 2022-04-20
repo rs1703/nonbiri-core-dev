@@ -69,7 +69,7 @@ public:
   virtual std::vector<Chapter *> parseChapterEntries(const Manga &manga, CHtml &html);
   virtual Chapter *parseChapterEntry(const Manga &manga, CElement &element);
 
-  virtual std::string pagesRequest(const std::string &url);
+  virtual std::string pagesRequest(const std::string &path);
   virtual std::string pagesRequest(const Chapter &chapter);
   virtual std::vector<std::string> parsePages(const Chapter &chapter, const std::string &response);
   virtual std::vector<std::string> parsePages(const Chapter &chapter, CHtml &html);

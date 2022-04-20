@@ -134,7 +134,7 @@ Chapter *Extension::parseChapterEntry(const Manga &, CElement &)
   ErrNotImplemented;
 }
 
-std::string Extension::pagesRequest(const std::string &url)
+std::string Extension::pagesRequest(const std::string &)
 {
   return NULL;
 }
