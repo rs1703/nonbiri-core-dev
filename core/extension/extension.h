@@ -70,8 +70,8 @@ public:
   virtual Chapter *parseChapterEntry(const Manga &manga, CElement &element);
 
   virtual std::string pagesRequest(const std::string &path);
-  virtual std::vector<std::string> parsePages(const Chapter &chapter, const std::string &response);
-  virtual std::vector<std::string> parsePages(const Chapter &chapter, CHtml &html);
+  virtual std::vector<std::string> parsePages(const std::string &response);
+  virtual std::vector<std::string> parsePages(CHtml &html);
 
 protected:
   std::string prependBaseUrl(const std::string &path);

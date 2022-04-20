@@ -139,12 +139,12 @@ std::string Extension::pagesRequest(const std::string &)
   return NULL;
 }
 
-vector<string> Extension::parsePages(const Chapter &, const string &)
+vector<string> Extension::parsePages(const string &)
 {
   ErrNotImplemented;
 }
 
-vector<string> Extension::parsePages(const Chapter &, CHtml &)
+vector<string> Extension::parsePages(CHtml &)
 {
   ErrNotImplemented;
 }
