@@ -50,28 +50,28 @@ public:
   virtual std::string latestsNextSelector();
   virtual std::string latestsRequest(int page);
   virtual std::tuple<std::vector<Manga *>, bool> parseLatestEntries(const std::string &response);
-  virtual std::tuple<std::vector<Manga *>, bool> parseLatestEntries(CHtml &html);
-  virtual Manga *parseLatestEntry(CElement &element);
+  virtual std::tuple<std::vector<Manga *>, bool> parseLatestEntries(HTML &html);
+  virtual Manga *parseLatestEntry(Element &element);
 
   virtual std::string searchMangaSelector();
   virtual std::string searchMangaNextSelector();
   virtual std::string searchMangaRequest(int page, const std::string &query);
   virtual std::tuple<std::vector<Manga *>, bool> parseSearchEntries(const std::string &response);
-  virtual std::tuple<std::vector<Manga *>, bool> parseSearchEntries(CHtml &html);
-  virtual Manga *parseSearchEntry(CElement &element);
+  virtual std::tuple<std::vector<Manga *>, bool> parseSearchEntries(HTML &html);
+  virtual Manga *parseSearchEntry(Element &element);
 
   virtual Manga *parseManga(const std::string &response);
-  virtual Manga *parseManga(CHtml &html);
+  virtual Manga *parseManga(HTML &html);
 
   virtual std::string chaptersSelector();
   virtual std::string chaptersRequest(const Manga &manga);
   virtual std::vector<Chapter *> parseChapterEntries(const Manga &manga, const std::string &response);
-  virtual std::vector<Chapter *> parseChapterEntries(const Manga &manga, CHtml &html);
-  virtual Chapter *parseChapterEntry(const Manga &manga, CElement &element);
+  virtual std::vector<Chapter *> parseChapterEntries(const Manga &manga, HTML &html);
+  virtual Chapter *parseChapterEntry(const Manga &manga, Element &element);
 
   virtual std::string pagesRequest(const std::string &path);
   virtual std::vector<std::string> parsePages(const std::string &response);
-  virtual std::vector<std::string> parsePages(CHtml &html);
+  virtual std::vector<std::string> parsePages(HTML &html);
 
 protected:
   std::string prependBaseUrl(const std::string &path);

@@ -6,25 +6,26 @@
 #include <vector>
 
 #include <gumbo-query/src/Document.h>
-#include <gumbo-query/src/Node.h>
 
-class CElement
+class CNode;
+
+class Element
 {
   std::shared_ptr<CNode> node_;
 
 public:
-  CElement(const CNode &node);
-  CElement(std::shared_ptr<CNode> node);
-  CElement(const CElement &element);
-  ~CElement();
+  Element(const CNode &node);
+  Element(std::shared_ptr<CNode> node);
+  Element(const Element &element);
+  ~Element();
 
-  std::vector<std::shared_ptr<CElement>> select(const std::string &selector);
-  std::shared_ptr<CElement> selectFirst(const std::string &selector);
-  std::shared_ptr<CElement> selectLast(const std::string &selector);
+  std::vector<std::shared_ptr<Element>> select(const std::string &selector);
+  std::shared_ptr<Element> selectFirst(const std::string &selector);
+  std::shared_ptr<Element> selectLast(const std::string &selector);
 
-  std::shared_ptr<CElement> parent();
-  std::shared_ptr<CElement> previous();
-  std::shared_ptr<CElement> next();
+  std::shared_ptr<Element> parent();
+  std::shared_ptr<Element> previous();
+  std::shared_ptr<Element> next();
 
   std::string attr(const std::string &name);
 
@@ -34,17 +35,17 @@ public:
   bool isValid();
 };
 
-class CHtml
+class HTML
 {
   CDocument document_;
 
 public:
-  CHtml(const std::string &document);
-  ~CHtml();
+  HTML(const std::string &document);
+  ~HTML();
 
-  std::vector<std::shared_ptr<CElement>> select(const std::string &selector);
-  std::shared_ptr<CElement> selectFirst(const std::string &selector);
-  std::shared_ptr<CElement> selectLast(const std::string &selector);
+  std::vector<std::shared_ptr<Element>> select(const std::string &selector);
+  std::shared_ptr<Element> selectFirst(const std::string &selector);
+  std::shared_ptr<Element> selectLast(const std::string &selector);
 };
 
 #endif  // NONBIRI_CORE_PARSER_PARSER_H_

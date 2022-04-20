@@ -59,12 +59,12 @@ tuple<vector<Manga *>, bool> Extension::parseLatestEntries(const string &)
   ErrNotImplemented;
 }
 
-tuple<vector<Manga *>, bool> Extension::parseLatestEntries(CHtml &)
+tuple<vector<Manga *>, bool> Extension::parseLatestEntries(HTML &)
 {
   ErrNotImplemented;
 }
 
-Manga *Extension::parseLatestEntry(CElement &)
+Manga *Extension::parseLatestEntry(Element &)
 {
   ErrNotImplemented;
 }
@@ -89,12 +89,12 @@ tuple<vector<Manga *>, bool> Extension::parseSearchEntries(const string &)
   ErrNotImplemented;
 }
 
-tuple<vector<Manga *>, bool> Extension::parseSearchEntries(CHtml &)
+tuple<vector<Manga *>, bool> Extension::parseSearchEntries(HTML &)
 {
   ErrNotImplemented;
 }
 
-Manga *Extension::parseSearchEntry(CElement &)
+Manga *Extension::parseSearchEntry(Element &)
 {
   ErrNotImplemented;
 }
@@ -104,7 +104,7 @@ Manga *Extension::parseManga(const string &)
   ErrNotImplemented;
 }
 
-Manga *Extension::parseManga(CHtml &)
+Manga *Extension::parseManga(HTML &)
 {
   ErrNotImplemented;
 }
@@ -124,12 +124,12 @@ vector<Chapter *> Extension::parseChapterEntries(const Manga &, const string &)
   ErrNotImplemented;
 }
 
-vector<Chapter *> Extension::parseChapterEntries(const Manga &, CHtml &)
+vector<Chapter *> Extension::parseChapterEntries(const Manga &, HTML &)
 {
   ErrNotImplemented;
 }
 
-Chapter *Extension::parseChapterEntry(const Manga &, CElement &)
+Chapter *Extension::parseChapterEntry(const Manga &, Element &)
 {
   ErrNotImplemented;
 }
@@ -144,7 +144,7 @@ vector<string> Extension::parsePages(const string &)
   ErrNotImplemented;
 }
 
-vector<string> Extension::parsePages(CHtml &)
+vector<string> Extension::parsePages(HTML &)
 {
   ErrNotImplemented;
 }
