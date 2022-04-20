@@ -14,6 +14,9 @@ Extension::Extension()
   baseUrl = BASE_URL;
 #endif
 
+  if (baseUrl.back() == '/')
+    baseUrl.pop_back();
+
 #ifdef NAME
   name = NAME;
 #endif
