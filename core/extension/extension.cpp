@@ -139,11 +139,6 @@ std::string Extension::pagesRequest(const std::string &)
   return NULL;
 }
 
-std::string Extension::pagesRequest(const Chapter &)
-{
-  return NULL;
-};
-
 vector<string> Extension::parsePages(const Chapter &, const string &)
 {
   ErrNotImplemented;
