@@ -14,10 +14,7 @@ enum MangaStatus
 
 struct Manga
 {
-  // Full path (e.g., domain.com/manga/path)
-  std::string url;
-
-  // Optional, will be taken from url if empty (e.g., /manga/path)
+  // e.g., /manga/path
   std::string path;
 
   // Full path (e.g., domain.com/covers/path)
@@ -36,10 +33,7 @@ struct Manga
 
 struct Chapter
 {
-  // Full path (e.g., domain.com/chapter/path)
-  std::string url;
-
-  // Optional, will be taken from url if empty (e.g., /chapter/path)
+  // e.g., /chapter/path
   std::string path;
 
   std::string name;
