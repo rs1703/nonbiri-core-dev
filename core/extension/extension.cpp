@@ -33,7 +33,7 @@ Extension::Extension()
   isNsfw = true;
 #endif
 
-#if USE_API
+#ifdef USE_API
   useApi = true;
 #endif
 }
