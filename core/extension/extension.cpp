@@ -29,7 +29,11 @@ Extension::Extension()
   version = VERSION;
 #endif
 
-#if USE_API == 1
+#ifdef IS_NSFW
+  isNsfw = true;
+#endif
+
+#if USE_API
   useApi = true;
 #endif
 }

@@ -35,6 +35,7 @@ struct ExtensionInfo
   std::string name;
   std::string language;
   std::string version;
+  bool isNsfw;
 };
 
 class Extension : public ExtensionInfo
