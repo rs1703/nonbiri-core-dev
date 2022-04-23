@@ -40,6 +40,7 @@ struct ExtensionInfo
 
 struct FilterInfo
 {
+  std::string id;
   std::string name;
   std::vector<std::string> options;
 };
