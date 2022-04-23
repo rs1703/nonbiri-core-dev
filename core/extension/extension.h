@@ -38,6 +38,12 @@ struct ExtensionInfo
   bool isNsfw;
 };
 
+struct FilterInfo
+{
+  std::string name;
+  std::vector<std::string> options;
+};
+
 class Extension : public ExtensionInfo
 {
 public:
@@ -56,7 +62,7 @@ public:
 
   virtual std::string searchMangaSelector();
   virtual std::string searchMangaNextSelector();
-  virtual std::string searchMangaRequest(int page, const std::string &query);
+  virtual std::string searchMangaRequest(int page, const std::string &query, const std::vector<FilterInfo> &filters);
   virtual std::tuple<std::vector<Manga *>, bool> parseSearchEntries(const std::string &response);
   virtual std::tuple<std::vector<Manga *>, bool> parseSearchEntries(HTML &html);
   virtual Manga *parseSearchEntry(Element &element);
@@ -73,6 +79,8 @@ public:
   virtual std::string pagesRequest(const std::string &path);
   virtual std::vector<std::string> parsePages(const std::string &response);
   virtual std::vector<std::string> parsePages(HTML &html);
+
+  virtual const std::vector<FilterInfo> &getFilters();
 
 protected:
   std::string prependBaseUrl(const std::string &path);
