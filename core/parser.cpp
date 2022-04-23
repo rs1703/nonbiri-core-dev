@@ -1,7 +1,7 @@
 #include <iostream>
 #include <sstream>
 
-#include <core/parser/parser.h>
+#include <core/parser.h>
 #include <gumbo-query/src/Node.h>
 
 HTML::HTML(const std::string &document)

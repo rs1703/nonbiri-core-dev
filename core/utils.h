@@ -1,5 +1,5 @@
-#ifndef NONBIRI_CORE_UTILS_UTILS_H_
-#define NONBIRI_CORE_UTILS_UTILS_H_
+#ifndef NONBIRI_CORE_UTILS_H_
+#define NONBIRI_CORE_UTILS_H_
 
 #include <string>
 
@@ -12,4 +12,4 @@ std::string stripPath(const std::string &url);
 std::string stripDomain(const std::string &url);
 std::string getFilename(const std::string &path);
 
-#endif  // NONBIRI_CORE_UTILS_UTILS_H_
+#endif  // NONBIRI_CORE_UTILS_H_

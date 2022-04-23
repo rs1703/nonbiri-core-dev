@@ -1,5 +1,5 @@
-#ifndef NONBIRI_CORE_PARSER_PARSER_H_
-#define NONBIRI_CORE_PARSER_PARSER_H_
+#ifndef NONBIRI_CORE_PARSER_H_
+#define NONBIRI_CORE_PARSER_H_
 
 #include <memory>
 #include <string>
@@ -48,4 +48,4 @@ public:
   std::shared_ptr<Element> selectLast(const std::string &selector);
 };
 
-#endif  // NONBIRI_CORE_PARSER_PARSER_H_
+#endif  // NONBIRI_CORE_PARSER_H_
