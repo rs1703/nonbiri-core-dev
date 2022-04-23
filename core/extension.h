@@ -201,7 +201,7 @@ private:
   std::vector<ChapterPtr> getChapters(const std::string &path);
   std::vector<std::string> getPages(const std::string &path);
 
-  std::map<std::string, FilterInfo> getFiltersMap();
+  const std::map<std::string, FilterInfo> &getFiltersMap();
   std::tuple<std::vector<MangaPtr>, bool> makeMangaEntries(const std::tuple<std::vector<Manga *>, bool> &result);
   std::vector<ChapterPtr> makeChapterEntries(const std::vector<Chapter *> &result);
 };

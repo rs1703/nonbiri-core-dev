@@ -224,7 +224,7 @@ std::vector<std::string> Extension::getPages(const std::string &path)
   return parsePages(html);
 }
 
-std::map<std::string, FilterInfo> Extension::getFiltersMap()
+const std::map<std::string, FilterInfo> &Extension::getFiltersMap()
 {
   return filtersMap;
 }
