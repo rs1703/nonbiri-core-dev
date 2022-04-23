@@ -83,7 +83,7 @@ std::string Extension::searchMangaNextSelector()
   return NULL;
 };
 
-std::string Extension::searchMangaRequest(int, const std::string &, const std::vector<FilterInfo> &)
+std::string Extension::searchMangaRequest(int, const std::string &, const std::vector<Filter> &)
 {
   return NULL;
 };

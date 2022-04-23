@@ -39,11 +39,17 @@ struct ExtensionInfo
   bool isNsfw;
 };
 
+struct Filter
+{
+  std::string key;
+  std::string value;
+};
+
 struct FilterInfo
 {
-  std::string id;
   std::string name;
-  std::unordered_map<std::string, std::string> options;
+  std::string key;
+  std::unordered_map<std::string, std::string> values;
 };
 
 class Extension : public ExtensionInfo
@@ -64,7 +70,7 @@ public:
 
   virtual std::string searchMangaSelector();
   virtual std::string searchMangaNextSelector();
-  virtual std::string searchMangaRequest(int page, const std::string &query, const std::vector<FilterInfo> &filters);
+  virtual std::string searchMangaRequest(int page, const std::string &query, const std::vector<Filter> &filters);
   virtual std::tuple<std::vector<Manga *>, bool> parseSearchEntries(const std::string &response);
   virtual std::tuple<std::vector<Manga *>, bool> parseSearchEntries(HTML &html);
   virtual Manga *parseSearchEntry(Element &element);
