@@ -8,6 +8,7 @@
 #include <tuple>
 #include <vector>
 
+#include <core/filters.h>
 #include <core/models.h>
 #include <core/parser.h>
 
@@ -39,19 +40,6 @@ struct ExtensionInfo
   bool isNsfw;
 };
 
-struct Filter
-{
-  std::string key;
-  std::string value;
-};
-
-struct FilterInfo
-{
-  std::string name;
-  std::string key;
-  std::map<std::string, std::string> values;
-};
-
 class Manager;
 class Api;
 class Web;
@@ -62,7 +50,7 @@ class Extension : public ExtensionInfo
   friend class Api;
   friend class Web;
 
-  std::map<std::string, FilterInfo> filtersMap;
+  std::map<std::string, Filter> filtersMap;
   std::atomic_bool hasUpdate = false;
 
 public:
@@ -113,7 +101,7 @@ public:
     return NULL;
   }
 
-  virtual std::string searchMangaRequest(int page, const std::string &query, const std::vector<Filter> &filters)
+  virtual std::string searchMangaRequest(int page, const std::string &query, const std::vector<FilterKV> &filters)
   {
     return NULL;
   }
@@ -183,7 +171,7 @@ public:
     ErrNotImplemented;
   }
 
-  virtual const std::vector<FilterInfo> &getFilters()
+  virtual const std::vector<Filter> &getFilters()
   {
     ErrNotImplemented;
   }
@@ -195,13 +183,13 @@ private:
   std::tuple<std::vector<MangaPtr>, bool> getLatests(int page = 1);
   std::tuple<std::vector<MangaPtr>, bool> searchManga(int page = 1,
                                                       const std::string &query = "",
-                                                      const std::vector<Filter> &filters = {});
+                                                      const std::vector<FilterKV> &filters = {});
   MangaPtr getManga(const std::string &path);
   std::vector<ChapterPtr> getChapters(Manga &manga);
   std::vector<ChapterPtr> getChapters(const std::string &path);
   std::vector<std::string> getPages(const std::string &path);
 
-  const std::map<std::string, FilterInfo> &getFiltersMap();
+  const std::map<std::string, Filter> &getFiltersMap();
   std::tuple<std::vector<MangaPtr>, bool> makeMangaEntries(const std::tuple<std::vector<Manga *>, bool> &result);
   std::vector<ChapterPtr> makeChapterEntries(const std::vector<Chapter *> &result);
 };

@@ -48,7 +48,7 @@ void Extension::init()
 {
   try {
     auto filters = getFilters();
-    for (const auto &filter : filters)
+    for (auto &filter : filters)
       filtersMap[filter.key] = filter;
   } catch (...) {
     // ignore
@@ -110,7 +110,7 @@ std::tuple<std::vector<MangaPtr>, bool> Extension::getLatests(int page)
 
 std::tuple<std::vector<MangaPtr>, bool> Extension::searchManga(int page,
                                                                const std::string &query,
-                                                               const std::vector<Filter> &filters)
+                                                               const std::vector<FilterKV> &filters)
 {
   const std::string res = searchMangaRequest(std::max(page, 1), query, filters);
   if (res.empty())
@@ -224,7 +224,7 @@ std::vector<std::string> Extension::getPages(const std::string &path)
   return parsePages(html);
 }
 
-const std::map<std::string, FilterInfo> &Extension::getFiltersMap()
+const std::map<std::string, Filter> &Extension::getFiltersMap()
 {
   return filtersMap;
 }
