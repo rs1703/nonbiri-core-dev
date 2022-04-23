@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <string>
 #include <tuple>
+#include <unordered_map>
 #include <vector>
 
 #include <core/models/models.h>
@@ -42,7 +43,7 @@ struct FilterInfo
 {
   std::string id;
   std::string name;
-  std::vector<std::string> options;
+  std::unordered_map<std::string, std::string> options;
 };
 
 class Extension : public ExtensionInfo
