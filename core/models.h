@@ -40,7 +40,7 @@ struct Chapter
   std::string path;
 
   std::string name;
-  int publishedAt;
+  int64_t publishedAt;
   std::vector<std::string> groups;
 };
 
