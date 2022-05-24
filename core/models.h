@@ -13,7 +13,7 @@ enum MangaStatus
   Dropped,
 };
 
-struct Manga
+struct Manga_t
 {
   // e.g., /manga/path
   std::string path;
@@ -32,9 +32,9 @@ struct Manga
   std::vector<std::string> genres;
 };
 
-#define MangaPtr std::shared_ptr<Manga>
+#define MangaPtr_t std::shared_ptr<Manga_t>
 
-struct Chapter
+struct Chapter_t
 {
   // e.g., /chapter/path
   std::string path;
@@ -44,6 +44,6 @@ struct Chapter
   std::vector<std::string> groups;
 };
 
-#define ChapterPtr std::shared_ptr<Chapter>
+#define ChapterPtr_t std::shared_ptr<Chapter_t>
 
 #endif  // NONBIRI_CORE_MODELS_H_

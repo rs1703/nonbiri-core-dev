@@ -68,20 +68,20 @@ std::string Extension::prependBaseUrl(const std::string &path)
   return result;
 }
 
-std::tuple<std::vector<MangaPtr>, bool> Extension::getLatests(int page)
+std::tuple<std::vector<MangaPtr_t>, bool> Extension::getLatests(int page)
 {
   const std::string res = latestsRequest(std::max(page, 1));
   if (res.empty())
     throw std::runtime_error("No results");
 
   if (useApi) {
-    const std::tuple<std::vector<Manga *>, bool> result = parseLatestEntries(res);
+    const std::tuple<std::vector<Manga_t *>, bool> result = parseLatestEntries(res);
     return makeMangaEntries(result);
   }
 
   HTML html {res};
   try {
-    const std::tuple<std::vector<Manga *>, bool> result = parseLatestEntries(html);
+    const std::tuple<std::vector<Manga_t *>, bool> result = parseLatestEntries(html);
     return makeMangaEntries(result);
   } catch (...) {
     // ignore
@@ -90,11 +90,11 @@ std::tuple<std::vector<MangaPtr>, bool> Extension::getLatests(int page)
   const std::string selector = latestsSelector();
   const std::vector<ElementPtr> entries = html.select(selector);
 
-  std::vector<MangaPtr> result;
+  std::vector<MangaPtr_t> result;
   for (const ElementPtr &entry : entries) {
-    const Manga *manga = parseLatestEntry(*entry);
+    const Manga_t *manga = parseLatestEntry(*entry);
     if (manga != nullptr)
-      result.push_back(std::make_shared<Manga>(*manga));
+      result.push_back(std::make_shared<Manga_t>(*manga));
   }
 
   const std::string nextSelector = latestsNextSelector();
@@ -108,22 +108,22 @@ std::tuple<std::vector<MangaPtr>, bool> Extension::getLatests(int page)
   return std::make_tuple(result, hasNext);
 }
 
-std::tuple<std::vector<MangaPtr>, bool> Extension::searchManga(int page,
-                                                               const std::string &query,
-                                                               const std::vector<FilterKV> &filters)
+std::tuple<std::vector<MangaPtr_t>, bool> Extension::searchManga(int page,
+                                                                 const std::string &query,
+                                                                 const std::vector<FilterKV> &filters)
 {
   const std::string res = searchMangaRequest(std::max(page, 1), query, filters);
   if (res.empty())
     throw std::runtime_error("No results");
 
   if (useApi) {
-    const std::tuple<std::vector<Manga *>, bool> result = parseSearchEntries(res);
+    const std::tuple<std::vector<Manga_t *>, bool> result = parseSearchEntries(res);
     return makeMangaEntries(result);
   }
 
   HTML html {res};
   try {
-    const std::tuple<std::vector<Manga *>, bool> result = parseSearchEntries(html);
+    const std::tuple<std::vector<Manga_t *>, bool> result = parseSearchEntries(html);
     return makeMangaEntries(result);
   } catch (...) {
     // ignore
@@ -131,12 +131,12 @@ std::tuple<std::vector<MangaPtr>, bool> Extension::searchManga(int page,
 
   const std::string selector = searchMangaSelector();
   const std::vector<ElementPtr> entries = html.select(selector);
-  std::vector<MangaPtr> result;
+  std::vector<MangaPtr_t> result;
 
   for (const ElementPtr &entry : entries) {
-    const Manga *manga = parseSearchEntry(*entry);
+    const Manga_t *manga = parseSearchEntry(*entry);
     if (manga != nullptr)
-      result.push_back(std::make_shared<Manga>(*manga));
+      result.push_back(std::make_shared<Manga_t>(*manga));
   }
 
   const std::string nextSelector = searchMangaNextSelector();
@@ -150,7 +150,7 @@ std::tuple<std::vector<MangaPtr>, bool> Extension::searchManga(int page,
   return std::make_tuple(result, hasNext);
 }
 
-MangaPtr Extension::getManga(const std::string &path)
+MangaPtr_t Extension::getManga(const std::string &path)
 {
   const std::string uri {prependBaseUrl(path)};
   std::string cacheKey {id + path};
@@ -159,7 +159,7 @@ MangaPtr Extension::getManga(const std::string &path)
   if (res.empty())
     throw std::runtime_error("No results");
 
-  Manga *result;
+  Manga_t *result;
   if (useApi) {
     result = parseManga(res);
   } else {
@@ -170,23 +170,23 @@ MangaPtr Extension::getManga(const std::string &path)
   if (result == nullptr)
     throw std::runtime_error("No results");
 
-  return std::make_shared<Manga>(*result);
+  return std::make_shared<Manga_t>(*result);
 }
 
-std::vector<ChapterPtr> Extension::getChapters(Manga &manga)
+std::vector<ChapterPtr_t> Extension::getChapters(Manga_t &manga)
 {
   const std::string res = chaptersRequest(manga);
   if (res.empty())
     throw std::runtime_error("No results");
 
   if (useApi) {
-    const std::vector<Chapter *> result = parseChapterEntries(manga, res);
+    const std::vector<Chapter_t *> result = parseChapterEntries(manga, res);
     return makeChapterEntries(result);
   }
 
   HTML html {res};
   try {
-    const std::vector<Chapter *> result = parseChapterEntries(manga, html);
+    const std::vector<Chapter_t *> result = parseChapterEntries(manga, html);
     return makeChapterEntries(result);
   } catch (...) {
     // ignore
@@ -194,20 +194,20 @@ std::vector<ChapterPtr> Extension::getChapters(Manga &manga)
 
   const std::string selector = chaptersSelector();
   const std::vector<ElementPtr> elements = html.select(selector);
-  std::vector<ChapterPtr> result;
+  std::vector<ChapterPtr_t> result;
 
   for (const ElementPtr &element : elements) {
-    const Chapter *entry = parseChapterEntry(manga, *element);
+    const Chapter_t *entry = parseChapterEntry(manga, *element);
     if (entry != nullptr)
-      result.push_back(std::make_shared<Chapter>(*entry));
+      result.push_back(std::make_shared<Chapter_t>(*entry));
   }
 
   return result;
 }
 
-std::vector<ChapterPtr> Extension::getChapters(const std::string &path)
+std::vector<ChapterPtr_t> Extension::getChapters(const std::string &path)
 {
-  const MangaPtr manga = getManga(path);
+  const MangaPtr_t manga = getManga(path);
   return getChapters(*manga);
 }
 
@@ -229,19 +229,19 @@ const std::map<std::string, Filter> &Extension::getFiltersMap()
   return filtersMap;
 }
 
-std::tuple<std::vector<MangaPtr>, bool> Extension::makeMangaEntries(
-  const std::tuple<std::vector<Manga *>, bool> &result)
+std::tuple<std::vector<MangaPtr_t>, bool> Extension::makeMangaEntries(
+  const std::tuple<std::vector<Manga_t *>, bool> &result)
 {
-  std::vector<MangaPtr> entries;
-  for (const Manga *entry : std::get<0>(result))
-    entries.push_back(std::make_shared<Manga>(*entry));
+  std::vector<MangaPtr_t> entries;
+  for (const Manga_t *entry : std::get<0>(result))
+    entries.push_back(std::make_shared<Manga_t>(*entry));
   return std::make_tuple(entries, std::get<1>(result));
 }
 
-std::vector<ChapterPtr> Extension::makeChapterEntries(const std::vector<Chapter *> &result)
+std::vector<ChapterPtr_t> Extension::makeChapterEntries(const std::vector<Chapter_t *> &result)
 {
-  std::vector<ChapterPtr> entries;
-  for (const Chapter *entry : result)
-    entries.push_back(std::make_shared<Chapter>(*entry));
+  std::vector<ChapterPtr_t> entries;
+  for (const Chapter_t *entry : result)
+    entries.push_back(std::make_shared<Chapter_t>(*entry));
   return entries;
 }

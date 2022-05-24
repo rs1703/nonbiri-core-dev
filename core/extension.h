@@ -76,17 +76,17 @@ public:
     return NULL;
   }
 
-  virtual std::tuple<std::vector<Manga *>, bool> parseLatestEntries(const std::string &response)
+  virtual std::tuple<std::vector<Manga_t *>, bool> parseLatestEntries(const std::string &response)
   {
     ErrNotImplemented;
   }
 
-  virtual std::tuple<std::vector<Manga *>, bool> parseLatestEntries(HTML &html)
+  virtual std::tuple<std::vector<Manga_t *>, bool> parseLatestEntries(HTML &html)
   {
     ErrNotImplemented;
   }
 
-  virtual Manga *parseLatestEntry(Element &element)
+  virtual Manga_t *parseLatestEntry(Element &element)
   {
     ErrNotImplemented;
   }
@@ -106,27 +106,27 @@ public:
     return NULL;
   }
 
-  virtual std::tuple<std::vector<Manga *>, bool> parseSearchEntries(const std::string &response)
+  virtual std::tuple<std::vector<Manga_t *>, bool> parseSearchEntries(const std::string &response)
   {
     ErrNotImplemented;
   }
 
-  virtual std::tuple<std::vector<Manga *>, bool> parseSearchEntries(HTML &html)
+  virtual std::tuple<std::vector<Manga_t *>, bool> parseSearchEntries(HTML &html)
   {
     ErrNotImplemented;
   }
 
-  virtual Manga *parseSearchEntry(Element &element)
+  virtual Manga_t *parseSearchEntry(Element &element)
   {
     ErrNotImplemented;
   }
 
-  virtual Manga *parseManga(const std::string &response)
+  virtual Manga_t *parseManga(const std::string &response)
   {
     ErrNotImplemented;
   }
 
-  virtual Manga *parseManga(HTML &html)
+  virtual Manga_t *parseManga(HTML &html)
   {
     ErrNotImplemented;
   }
@@ -136,22 +136,22 @@ public:
     return NULL;
   }
 
-  virtual std::string chaptersRequest(const Manga &manga)
+  virtual std::string chaptersRequest(const Manga_t &manga)
   {
     return NULL;
   }
 
-  virtual std::vector<Chapter *> parseChapterEntries(const Manga &manga, const std::string &response)
+  virtual std::vector<Chapter_t *> parseChapterEntries(const Manga_t &manga, const std::string &response)
   {
     ErrNotImplemented;
   }
 
-  virtual std::vector<Chapter *> parseChapterEntries(const Manga &manga, HTML &html)
+  virtual std::vector<Chapter_t *> parseChapterEntries(const Manga_t &manga, HTML &html)
   {
     ErrNotImplemented;
   }
 
-  virtual Chapter *parseChapterEntry(const Manga &manga, Element &element)
+  virtual Chapter_t *parseChapterEntry(const Manga_t &manga, Element &element)
   {
     ErrNotImplemented;
   }
@@ -180,18 +180,18 @@ protected:
   std::string prependBaseUrl(const std::string &path);
 
 private:
-  std::tuple<std::vector<MangaPtr>, bool> getLatests(int page = 1);
-  std::tuple<std::vector<MangaPtr>, bool> searchManga(int page = 1,
-                                                      const std::string &query = "",
-                                                      const std::vector<FilterKV> &filters = {});
-  MangaPtr getManga(const std::string &path);
-  std::vector<ChapterPtr> getChapters(Manga &manga);
-  std::vector<ChapterPtr> getChapters(const std::string &path);
+  std::tuple<std::vector<MangaPtr_t>, bool> getLatests(int page = 1);
+  std::tuple<std::vector<MangaPtr_t>, bool> searchManga(int page = 1,
+                                                        const std::string &query = "",
+                                                        const std::vector<FilterKV> &filters = {});
+  MangaPtr_t getManga(const std::string &path);
+  std::vector<ChapterPtr_t> getChapters(Manga_t &manga);
+  std::vector<ChapterPtr_t> getChapters(const std::string &path);
   std::vector<std::string> getPages(const std::string &path);
 
   const std::map<std::string, Filter> &getFiltersMap();
-  std::tuple<std::vector<MangaPtr>, bool> makeMangaEntries(const std::tuple<std::vector<Manga *>, bool> &result);
-  std::vector<ChapterPtr> makeChapterEntries(const std::vector<Chapter *> &result);
+  std::tuple<std::vector<MangaPtr_t>, bool> makeMangaEntries(const std::tuple<std::vector<Manga_t *>, bool> &result);
+  std::vector<ChapterPtr_t> makeChapterEntries(const std::vector<Chapter_t *> &result);
 };
 
 #endif  // NONBIRI_CORE_EXTENSION_H_
