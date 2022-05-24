@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-enum MangaStatus
+enum class MangaStatus
 {
   Ongoing = 1,
   Completed,
