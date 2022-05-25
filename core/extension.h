@@ -180,18 +180,16 @@ protected:
   std::string prependBaseUrl(const std::string &path);
 
 private:
-  std::tuple<std::vector<MangaPtr_t>, bool> getLatests(int page = 1);
-  std::tuple<std::vector<MangaPtr_t>, bool> searchManga(int page = 1,
-                                                        const std::string &query = "",
-                                                        const std::vector<FilterKV> &filters = {});
-  MangaPtr_t getManga(const std::string &path);
-  std::vector<ChapterPtr_t> getChapters(Manga_t &manga);
-  std::vector<ChapterPtr_t> getChapters(const std::string &path);
+  std::tuple<std::vector<Manga_t *>, bool> getLatests(int page = 1);
+  std::tuple<std::vector<Manga_t *>, bool> searchManga(int page = 1,
+                                                       const std::string &query = "",
+                                                       const std::vector<FilterKV> &filters = {});
+  Manga_t *getManga(const std::string &path);
+  std::vector<Chapter_t *> getChapters(const Manga_t &manga);
+  std::vector<Chapter_t *> getChapters(const std::string &path);
   std::vector<std::string> getPages(const std::string &path);
 
   const std::map<std::string, Filter> &getFiltersMap();
-  std::tuple<std::vector<MangaPtr_t>, bool> makeMangaEntries(const std::tuple<std::vector<Manga_t *>, bool> &result);
-  std::vector<ChapterPtr_t> makeChapterEntries(const std::vector<Chapter_t *> &result);
 };
 
 #endif  // NONBIRI_CORE_EXTENSION_H_

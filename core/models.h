@@ -1,7 +1,6 @@
 #ifndef NONBIRI_CORE_MODELS_H_
 #define NONBIRI_CORE_MODELS_H_
 
-#include <memory>
 #include <string>
 #include <vector>
 
@@ -32,8 +31,6 @@ struct Manga_t
   std::vector<std::string> genres;
 };
 
-#define MangaPtr_t std::shared_ptr<Manga_t>
-
 struct Chapter_t
 {
   // e.g., /chapter/path
@@ -43,7 +40,5 @@ struct Chapter_t
   int64_t publishedAt;
   std::vector<std::string> groups;
 };
-
-#define ChapterPtr_t std::shared_ptr<Chapter_t>
 
 #endif  // NONBIRI_CORE_MODELS_H_
