@@ -60,7 +60,7 @@ std::string Extension::prependBaseUrl(const std::string &path)
   if (path.find(baseUrl) == 0 || path.find("http") == 0)
     return path;
 
-  std::string result = baseUrl;
+  std::string result {baseUrl};
   if (path.front() != '/')
     result += '/';
   result += path;
@@ -95,7 +95,7 @@ std::tuple<std::vector<Manga_t *>, bool> Extension::getLatests(int page)
   }
 
   const std::string nextSelector = latestsNextSelector();
-  bool hasNext = false;
+  bool hasNext {false};
 
   if (!nextSelector.empty()) {
     const ElementPtr next = html.selectFirst(nextSelector);
@@ -134,7 +134,7 @@ std::tuple<std::vector<Manga_t *>, bool> Extension::searchManga(int page,
   }
 
   const std::string nextSelector = searchMangaNextSelector();
-  bool hasNext = false;
+  bool hasNext {false};
 
   if (!nextSelector.empty()) {
     const ElementPtr next = html.selectFirst(nextSelector);
@@ -146,14 +146,14 @@ std::tuple<std::vector<Manga_t *>, bool> Extension::searchManga(int page,
 
 Manga_t *Extension::getManga(const std::string &path)
 {
-  const std::string uri {prependBaseUrl(path)};
+  const std::string uri = prependBaseUrl(path);
   std::string cacheKey {id + path};
 
   const std::string res = http::get(uri);
   if (res.empty())
     throw std::runtime_error("No results");
 
-  Manga_t *result;
+  Manga_t *result {nullptr};
   if (useApi) {
     result = parseManga(res);
   } else {

@@ -11,7 +11,7 @@ class CNode;
 
 class Element
 {
-  std::shared_ptr<CNode> node_;
+  std::shared_ptr<CNode> node_ {nullptr};
 
 public:
   Element(const CNode &node);

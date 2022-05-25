@@ -6,7 +6,8 @@
 
 enum class MangaStatus
 {
-  Ongoing = 1,
+  Unknown,
+  Ongoing,
   Completed,
   Hiatus,
   Dropped,
@@ -14,17 +15,12 @@ enum class MangaStatus
 
 struct Manga_t
 {
-  // e.g., /manga/path
-  std::string path;
+  std::string path {};
+  std::string coverUrl {};
+  std::string title {};
+  std::string description {};
 
-  // Full path (e.g., domain.com/covers/path)
-  std::string coverUrl;
-
-  std::string title;
-  std::string description;
-
-  // Publication status
-  MangaStatus status;
+  MangaStatus status {MangaStatus::Unknown};
 
   std::vector<std::string> artists;
   std::vector<std::string> authors;
@@ -33,11 +29,10 @@ struct Manga_t
 
 struct Chapter_t
 {
-  // e.g., /chapter/path
-  std::string path;
+  std::string path {};
+  std::string name {};
+  int64_t publishedAt {};
 
-  std::string name;
-  int64_t publishedAt;
   std::vector<std::string> groups;
 };
 

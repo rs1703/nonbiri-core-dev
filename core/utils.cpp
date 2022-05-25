@@ -13,7 +13,7 @@ std::string http::get(const std::string &url)
   if (!curl)
     return NULL;
 
-  std::string readBuffer;
+  std::string readBuffer {};
 
   curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
   curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);

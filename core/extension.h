@@ -31,13 +31,12 @@
 
 struct ExtensionInfo
 {
-  std::string id;
-  std::string baseUrl;
-  std::string name;
-  std::string language;
-  std::string version;
-
-  bool isNsfw;
+  std::string id {};
+  std::string baseUrl {};
+  std::string name {};
+  std::string language {};
+  std::string version {};
+  bool isNsfw {false};
 };
 
 class Manager;
@@ -51,10 +50,10 @@ class Extension : public ExtensionInfo
   friend class Web;
 
   std::map<std::string, Filter> filtersMap;
-  std::atomic_bool hasUpdate = false;
+  std::atomic_bool hasUpdate {false};
 
 public:
-  bool useApi;
+  bool useApi {false};
 
   Extension();
   ~Extension();
