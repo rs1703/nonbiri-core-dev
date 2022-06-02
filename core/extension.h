@@ -3,31 +3,19 @@
 
 #include <atomic>
 #include <map>
+#include <memory>
 #include <stdexcept>
 #include <string>
 #include <tuple>
 #include <vector>
 
 #include <core/filters.h>
+#include <core/http.h>
 #include <core/models.h>
 #include <core/parser.h>
+#include <core/utility.h>
 
 #define ErrNotImplemented throw std::runtime_error("Not implemented")
-
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
-#  define EXPORT_API extern "C" __declspec(dllexport)
-#else
-#  define EXPORT_API extern "C"
-#endif
-
-#define RegisterExtension(extension) \
-  EXPORT_API extension *create() \
-  { \
-    auto ext = new extension(); \
-    ext->init(); \
-\
-    return ext; \
-  }
 
 struct ExtensionInfo
 {
@@ -36,7 +24,7 @@ struct ExtensionInfo
   std::string name {};
   std::string language {};
   std::string version {};
-  bool isNsfw {false};
+  bool isNsfw {};
 };
 
 class Manager;
@@ -49,146 +37,160 @@ class Extension : public ExtensionInfo
   friend class Api;
   friend class Web;
 
-  std::map<std::string, Filter> filtersMap;
-  std::atomic_bool hasUpdate {false};
+  std::map<std::string, Filter> filtersMap {};
+  std::atomic_bool hasUpdate {};
+
+protected:
+  HttpClient http;
 
 public:
-  bool useApi {false};
+  bool useApi {};
 
   Extension();
   ~Extension();
 
   void init();
 
-  virtual std::string latestsSelector()
+  virtual std::string latestsSelector() const
   {
     return NULL;
   }
 
-  virtual std::string latestsNextSelector()
+  virtual std::string latestsNextSelector() const
   {
     return NULL;
   }
 
-  virtual std::string latestsRequest(int page)
+  virtual std::string latestsRequest(int page) const
   {
     return NULL;
   }
 
-  virtual std::tuple<std::vector<Manga_t *>, bool> parseLatestEntries(const std::string &response)
+  virtual std::tuple<std::vector<std::shared_ptr<Manga_t>>, bool> parseLatestEntries(const std::string &response) const
   {
     ErrNotImplemented;
   }
 
-  virtual std::tuple<std::vector<Manga_t *>, bool> parseLatestEntries(HTML &html)
+  virtual std::tuple<std::vector<std::shared_ptr<Manga_t>>, bool> parseLatestEntries(HTML &html) const
   {
     ErrNotImplemented;
   }
 
-  virtual Manga_t *parseLatestEntry(Element &element)
+  virtual std::shared_ptr<Manga_t> parseLatestEntry(Element &element) const
   {
     ErrNotImplemented;
   }
 
-  virtual std::string searchMangaSelector()
+  virtual std::string searchMangaSelector() const
   {
     return NULL;
   }
 
-  virtual std::string searchMangaNextSelector()
+  virtual std::string searchMangaNextSelector() const
   {
     return NULL;
   }
 
-  virtual std::string searchMangaRequest(int page, const std::string &query, const std::vector<FilterKV> &filters)
+  virtual std::string searchMangaRequest(int page, const std::string &query, const std::vector<FilterKV> &filters) const
   {
     return NULL;
   }
 
-  virtual std::tuple<std::vector<Manga_t *>, bool> parseSearchEntries(const std::string &response)
+  virtual std::tuple<std::vector<std::shared_ptr<Manga_t>>, bool> parseSearchEntries(const std::string &response) const
   {
     ErrNotImplemented;
   }
 
-  virtual std::tuple<std::vector<Manga_t *>, bool> parseSearchEntries(HTML &html)
+  virtual std::tuple<std::vector<std::shared_ptr<Manga_t>>, bool> parseSearchEntries(HTML &html) const
   {
     ErrNotImplemented;
   }
 
-  virtual Manga_t *parseSearchEntry(Element &element)
+  virtual std::shared_ptr<Manga_t> parseSearchEntry(Element &element) const
   {
     ErrNotImplemented;
   }
 
-  virtual Manga_t *parseManga(const std::string &response)
+  virtual std::shared_ptr<Manga_t> parseManga(const std::string &response) const
   {
     ErrNotImplemented;
   }
 
-  virtual Manga_t *parseManga(HTML &html)
+  virtual std::shared_ptr<Manga_t> parseManga(HTML &html) const
   {
     ErrNotImplemented;
   }
 
-  virtual std::string chaptersSelector()
+  virtual std::string chaptersSelector() const
   {
     return NULL;
   }
 
-  virtual std::string chaptersRequest(const Manga_t &manga)
+  virtual std::string chaptersRequest(const Manga_t &manga) const
   {
     return NULL;
   }
 
-  virtual std::vector<Chapter_t *> parseChapterEntries(const Manga_t &manga, const std::string &response)
+  virtual std::vector<std::shared_ptr<Chapter_t>> parseChapterEntries(const Manga_t &manga,
+                                                                      const std::string &response) const
   {
     ErrNotImplemented;
   }
 
-  virtual std::vector<Chapter_t *> parseChapterEntries(const Manga_t &manga, HTML &html)
+  virtual std::vector<std::shared_ptr<Chapter_t>> parseChapterEntries(const Manga_t &manga, HTML &html) const
   {
     ErrNotImplemented;
   }
 
-  virtual Chapter_t *parseChapterEntry(const Manga_t &manga, Element &element)
+  virtual std::shared_ptr<Chapter_t> parseChapterEntry(const Manga_t &manga, Element &element) const
   {
     ErrNotImplemented;
   }
 
-  virtual std::string pagesRequest(const std::string &path)
+  virtual std::string pagesRequest(const std::string &path) const
   {
     return NULL;
   }
 
-  virtual std::vector<std::string> parsePages(const std::string &response)
+  virtual std::vector<std::string> parsePages(const std::string &response) const
   {
     ErrNotImplemented;
   }
 
-  virtual std::vector<std::string> parsePages(HTML &html)
+  virtual std::vector<std::string> parsePages(HTML &html) const
   {
     ErrNotImplemented;
   }
 
-  virtual const std::vector<Filter> &getFilters()
+  virtual const std::vector<Filter> &getFilters() const
   {
     ErrNotImplemented;
   }
 
 protected:
-  std::string prependBaseUrl(const std::string &path);
+  std::string prependBaseUrl(const std::string &path) const;
 
 private:
-  std::tuple<std::vector<Manga_t *>, bool> getLatests(int page = 1);
-  std::tuple<std::vector<Manga_t *>, bool> searchManga(int page = 1,
-                                                       const std::string &query = "",
-                                                       const std::vector<FilterKV> &filters = {});
-  Manga_t *getManga(const std::string &path);
-  std::vector<Chapter_t *> getChapters(const Manga_t &manga);
-  std::vector<Chapter_t *> getChapters(const std::string &path);
+  std::tuple<std::vector<std::shared_ptr<Manga_t>>, bool> getLatests(int page = 1);
+  std::tuple<std::vector<std::shared_ptr<Manga_t>>, bool> searchManga(int page = 1,
+                                                                      const std::string &query = "",
+                                                                      const std::vector<FilterKV> &filters = {});
+  std::shared_ptr<Manga_t> getManga(const std::string &path);
+  std::vector<std::shared_ptr<Chapter_t>> getChapters(const Manga_t &manga);
+  std::vector<std::shared_ptr<Chapter_t>> getChapters(const std::string &path);
   std::vector<std::string> getPages(const std::string &path);
 
   const std::map<std::string, Filter> &getFiltersMap();
 };
+
+typedef Extension *(*create_t)();
+#define RegisterExtension(extension) \
+  EXPORT_API extension *create() \
+  { \
+    auto ext = new extension(); \
+    ext->init(); \
+\
+    return ext; \
+  }
 
 #endif  // NONBIRI_CORE_EXTENSION_H_

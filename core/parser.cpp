@@ -1,4 +1,3 @@
-#include <iostream>
 #include <sstream>
 
 #include <core/parser.h>
@@ -9,18 +8,13 @@ HTML::HTML(const std::string &document)
   document_.parse(document);
 }
 
-HTML::~HTML()
-{
-  // std::cout << "HTML::~HTML()" << std::endl;
-}
-
 std::vector<std::shared_ptr<Element>> HTML::select(const std::string &selector)
 {
   CSelection nodes = document_.find(selector);
   if (nodes.nodeNum() == 0)
     return {};
 
-  std::vector<std::shared_ptr<Element>> elements;
+  std::vector<std::shared_ptr<Element>> elements {};
   for (size_t i = 0; i < nodes.nodeNum(); i++)
     elements.push_back(std::make_shared<Element>(nodes.nodeAt(i)));
   return elements;
@@ -42,14 +36,9 @@ std::shared_ptr<Element> HTML::selectLast(const std::string &selector)
   return std::make_shared<Element>(nodes.nodeAt(nodes.nodeNum() - 1));
 }
 
-Element::Element(const CNode &node) : node_(std::make_shared<CNode>(node)) {}
-Element::Element(std::shared_ptr<CNode> node) : node_(node) {}
-Element::Element(const Element &element) : node_(element.node_) {}
-
-Element::~Element()
-{
-  // std::cout << "Element::~Element()" << std::endl;
-}
+Element::Element(const CNode &node) : node_ {std::make_shared<CNode>(node)} {}
+Element::Element(std::shared_ptr<CNode> node) : node_ {node} {}
+Element::Element(const Element &element) : node_ {element.node_} {}
 
 std::vector<std::shared_ptr<Element>> Element::select(const std::string &selector)
 {
@@ -57,7 +46,7 @@ std::vector<std::shared_ptr<Element>> Element::select(const std::string &selecto
   if (nodes.nodeNum() == 0)
     return {};
 
-  std::vector<std::shared_ptr<Element>> elements;
+  std::vector<std::shared_ptr<Element>> elements {};
   for (size_t i = 0; i < nodes.nodeNum(); i++)
     elements.push_back(std::make_shared<Element>(nodes.nodeAt(i)));
   return elements;
@@ -76,7 +65,6 @@ std::shared_ptr<Element> Element::selectLast(const std::string &selector)
   CSelection nodes = node_->find(selector);
   if (nodes.nodeNum() == 0)
     return nullptr;
-
   return std::make_shared<Element>(nodes.nodeAt(nodes.nodeNum() - 1));
 }
 
@@ -111,14 +99,14 @@ std::string Element::attr(const std::string &name)
 
 std::vector<std::string> Element::classes()
 {
-  std::string class_attr = attr("class");
+  const std::string class_attr = attr("class");
   if (class_attr.empty())
     return {};
 
-  std::stringstream ss(class_attr);
-  std::string item;
+  std::stringstream ss {class_attr};
+  std::string item {};
 
-  std::vector<std::string> classes;
+  std::vector<std::string> classes {};
   while (std::getline(ss, item, ' '))
     classes.push_back(item);
   return classes;

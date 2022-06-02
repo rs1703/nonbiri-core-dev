@@ -8,18 +8,17 @@
 
 struct FilterKV
 {
-  std::string key;
-  std::string value;
+  std::string key {};
+  std::string value {};
 };
 
 struct Filter
 {
-  std::string name;
-  std::string key;
-  std::map<std::string, std::string> options;
+  std::string name {};
+  std::string key {};
+  std::map<std::string, std::string> options {};
 
   Filter() = default;
-
   Filter(const std::string &name,
          const std::string &key,
          const std::map<std::string, std::string> &options,
@@ -32,7 +31,7 @@ struct Filter
   std::string toString() const;
 
 private:
-  std::string type;
+  std::string type {};
 };
 
 struct Checkbox : public Filter

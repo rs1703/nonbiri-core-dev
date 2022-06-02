@@ -6,7 +6,7 @@
 
 enum class MangaStatus
 {
-  Unknown,
+  None,
   Ongoing,
   Completed,
   Hiatus,
@@ -20,7 +20,7 @@ struct Manga_t
   std::string title {};
   std::string description {};
 
-  MangaStatus status {MangaStatus::Unknown};
+  MangaStatus status {MangaStatus::None};
 
   std::vector<std::string> artists;
   std::vector<std::string> authors;

@@ -17,7 +17,6 @@ public:
   Element(const CNode &node);
   Element(std::shared_ptr<CNode> node);
   Element(const Element &element);
-  ~Element();
 
   std::vector<std::shared_ptr<Element>> select(const std::string &selector);
   std::shared_ptr<Element> selectFirst(const std::string &selector);
@@ -28,7 +27,6 @@ public:
   std::shared_ptr<Element> next();
 
   std::string attr(const std::string &name);
-
   std::vector<std::string> classes();
   std::string text();
 
@@ -41,7 +39,6 @@ class HTML
 
 public:
   HTML(const std::string &document);
-  ~HTML();
 
   std::vector<std::shared_ptr<Element>> select(const std::string &selector);
   std::shared_ptr<Element> selectFirst(const std::string &selector);

@@ -3,9 +3,12 @@
 Json::Value Filter::toJson() const
 {
   Json::Value root {};
-  root["name"] = name;
-  root["key"] = key;
-  root["type"] = type;
+  if (!name.empty())
+    root["name"] = name;
+  if (!key.empty())
+    root["key"] = key;
+  if (!type.empty())
+    root["type"] = type;
   for (const auto &[k, v] : options)
     root["options"][k] = v;
   return root;
