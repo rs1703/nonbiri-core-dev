@@ -35,9 +35,7 @@ Extension::Extension()
 #endif
 
 #ifdef USE_API
-#  if USE_API == 1
   useApi = true;
-#  endif
 #endif
 }
 
