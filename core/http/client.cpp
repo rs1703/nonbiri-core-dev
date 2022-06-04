@@ -2,7 +2,7 @@
 
 #include <core/core.h>
 #include <core/http/client.h>
-#include <string.h>
+#include <core/utility.h>
 
 size_t writeCallback(void *contents, size_t size, size_t nmemb, void *userp)
 {
@@ -38,13 +38,12 @@ std::shared_ptr<Response> Client::send(const Request &request) const
   if (curl == nullptr)
     return nullptr;
 
-  const char *method = request.method.c_str();
   setOpt(curl, CURLOPT_SSL_VERIFYPEER, 0);
   setOpt(curl, CURLOPT_SSL_VERIFYHOST, 0);
   setOpt(curl, CURLOPT_URL, request.url.c_str());
-  setOpt(curl, CURLOPT_CUSTOMREQUEST, method);
+  setOpt(curl, CURLOPT_CUSTOMREQUEST, request.method.c_str());
 
-  if (strcmpi(method, "POST") == 0 && !request.body.empty())
+  if (Utils::strcmpi(request.method, "POST") && !request.body.empty())
     setOpt(curl, CURLOPT_POSTFIELDS, request.body.c_str());
 
   for (const auto &header : request.headers)

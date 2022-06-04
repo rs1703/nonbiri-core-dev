@@ -17,6 +17,7 @@ void freeLibrary(void *handle);
 std::string stripPath(const std::string &url);
 std::string stripDomain(const std::string &url);
 std::string getFilename(const std::string &path);
+bool strcmpi(const std::string &str1, const std::string &str2);
 };  // namespace Utils
 
 #endif  // NONBIRI_CORE_UTILITY_H_
