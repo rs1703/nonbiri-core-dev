@@ -1,6 +1,13 @@
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+#  include <windows.h>
+#else
+#  include <dlfcn.h>
+#endif
 #include <core/utility.h>
 
-void *Utils::loadLibrary(const std::string &path)
+namespace Utils
+{
+void *loadLibrary(const std::string &path)
 {
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
   return LoadLibrary(path.c_str());
@@ -9,11 +16,10 @@ void *Utils::loadLibrary(const std::string &path)
 #endif
 }
 
-void *Utils::getSymbol(void *handle, const std::string &symbol)
+void *getSymbol(void *handle, const std::string &symbol)
 {
   if (handle == nullptr)
     return nullptr;
-
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
   return GetProcAddress((HMODULE)handle, symbol.c_str());
 #else
@@ -21,11 +27,10 @@ void *Utils::getSymbol(void *handle, const std::string &symbol)
 #endif
 }
 
-void Utils::freeLibrary(void *handle)
+void freeLibrary(void *handle)
 {
   if (handle == nullptr)
     return;
-
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
   FreeLibrary((HMODULE)handle);
 #else
@@ -33,57 +38,10 @@ void Utils::freeLibrary(void *handle)
 #endif
 }
 
-Mutex::Mutex()
-{
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
-  mutex = CreateMutex(nullptr, false, nullptr);
-#else
-  pthread_mutex_init(&mutex, nullptr);
-#endif
-}
-
-Mutex::~Mutex()
-{
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
-  CloseHandle(mutex);
-#else
-  pthread_mutex_destroy(&mutex);
-#endif
-}
-
-void Mutex::lock()
-{
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
-  WaitForSingleObject(mutex, INFINITE);
-#else
-  pthread_mutex_lock(&mutex);
-#endif
-}
-
-void Mutex::unlock()
-{
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
-  ReleaseMutex(mutex);
-#else
-  pthread_mutex_unlock(&mutex);
-#endif
-}
-
-MutexLock::MutexLock(Mutex &mutex) : mutex(mutex)
-{
-  mutex.lock();
-}
-
-MutexLock::~MutexLock()
-{
-  mutex.unlock();
-}
-
 std::string stripPath(const std::string &url)
 {
   if (url.find("://") == std::string::npos)
     return url;
-
   return url.substr(0, url.find("/", 8));
 }
 
@@ -91,7 +49,6 @@ std::string stripDomain(const std::string &url)
 {
   if (url.find("://") == std::string::npos)
     return url;
-
   size_t pos = url.find("/", 8);
   if (pos == std::string::npos)
     return "/";
@@ -110,3 +67,4 @@ std::string getFilename(const std::string &path)
     return path;
   return path.substr(pos + 1);
 }
+}  // namespace Utils

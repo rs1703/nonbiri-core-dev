@@ -10,7 +10,7 @@
 #include <vector>
 
 #include <core/filters.h>
-#include <core/http.h>
+#include <core/http/http.h>
 #include <core/models.h>
 #include <core/parser.h>
 #include <core/utility.h>
@@ -41,7 +41,7 @@ class Extension : public ExtensionInfo
   std::atomic_bool hasUpdate {};
 
 protected:
-  HttpClient http;
+  Http::Client client {};
 
 public:
   bool useApi {};
@@ -61,12 +61,13 @@ public:
     return NULL;
   }
 
-  virtual std::string latestsRequest(int page) const
+  virtual std::shared_ptr<Http::Response> latestsRequest(int page) const
   {
     return NULL;
   }
 
-  virtual std::tuple<std::vector<std::shared_ptr<Manga_t>>, bool> parseLatestEntries(const std::string &response) const
+  virtual std::tuple<std::vector<std::shared_ptr<Manga_t>>, bool> parseLatestEntries(
+    const Http::Response &response) const
   {
     ErrNotImplemented;
   }
@@ -91,12 +92,15 @@ public:
     return NULL;
   }
 
-  virtual std::string searchMangaRequest(int page, const std::string &query, const std::vector<FilterKV> &filters) const
+  virtual std::shared_ptr<Http::Response> searchMangaRequest(int page,
+                                                             const std::string &query,
+                                                             const std::vector<FilterKV> &filters) const
   {
     return NULL;
   }
 
-  virtual std::tuple<std::vector<std::shared_ptr<Manga_t>>, bool> parseSearchEntries(const std::string &response) const
+  virtual std::tuple<std::vector<std::shared_ptr<Manga_t>>, bool> parseSearchEntries(
+    const Http::Response &response) const
   {
     ErrNotImplemented;
   }
@@ -111,7 +115,7 @@ public:
     ErrNotImplemented;
   }
 
-  virtual std::shared_ptr<Manga_t> parseManga(const std::string &response) const
+  virtual std::shared_ptr<Manga_t> parseManga(const Http::Response &response) const
   {
     ErrNotImplemented;
   }
@@ -126,13 +130,13 @@ public:
     return NULL;
   }
 
-  virtual std::string chaptersRequest(const Manga_t &manga) const
+  virtual std::shared_ptr<Http::Response> chaptersRequest(const Manga_t &manga) const
   {
     return NULL;
   }
 
   virtual std::vector<std::shared_ptr<Chapter_t>> parseChapterEntries(const Manga_t &manga,
-                                                                      const std::string &response) const
+                                                                      const Http::Response &response) const
   {
     ErrNotImplemented;
   }
@@ -147,12 +151,12 @@ public:
     ErrNotImplemented;
   }
 
-  virtual std::string pagesRequest(const std::string &path) const
+  virtual std::shared_ptr<Http::Response> pagesRequest(const std::string &path) const
   {
     return NULL;
   }
 
-  virtual std::vector<std::string> parsePages(const std::string &response) const
+  virtual std::vector<std::string> parsePages(const Http::Response &response) const
   {
     ErrNotImplemented;
   }
@@ -171,16 +175,16 @@ protected:
   std::string prependBaseUrl(const std::string &path) const;
 
 private:
-  std::tuple<std::vector<std::shared_ptr<Manga_t>>, bool> getLatests(int page = 1);
+  std::tuple<std::vector<std::shared_ptr<Manga_t>>, bool> getLatests(int page = 1) const;
   std::tuple<std::vector<std::shared_ptr<Manga_t>>, bool> searchManga(int page = 1,
                                                                       const std::string &query = "",
-                                                                      const std::vector<FilterKV> &filters = {});
-  std::shared_ptr<Manga_t> getManga(const std::string &path);
-  std::vector<std::shared_ptr<Chapter_t>> getChapters(const Manga_t &manga);
-  std::vector<std::shared_ptr<Chapter_t>> getChapters(const std::string &path);
-  std::vector<std::string> getPages(const std::string &path);
+                                                                      const std::vector<FilterKV> &filters = {}) const;
+  std::shared_ptr<Manga_t> getManga(const std::string &path) const;
+  std::vector<std::shared_ptr<Chapter_t>> getChapters(const Manga_t &manga) const;
+  std::vector<std::shared_ptr<Chapter_t>> getChapters(const std::string &path) const;
+  std::vector<std::string> getPages(const std::string &path) const;
 
-  const std::map<std::string, Filter> &getFiltersMap();
+  const std::map<std::string, Filter> &getFiltersMap() const;
 };
 
 typedef Extension *(*create_t)();

@@ -22,9 +22,9 @@ struct Manga_t
 
   MangaStatus status {MangaStatus::None};
 
-  std::vector<std::string> artists;
-  std::vector<std::string> authors;
-  std::vector<std::string> genres;
+  std::vector<std::string> artists {};
+  std::vector<std::string> authors {};
+  std::vector<std::string> genres {};
 };
 
 struct Chapter_t
@@ -33,7 +33,7 @@ struct Chapter_t
   std::string name {};
   int64_t publishedAt {};
 
-  std::vector<std::string> groups;
+  std::vector<std::string> groups {};
 };
 
 #endif  // NONBIRI_CORE_MODELS_H_

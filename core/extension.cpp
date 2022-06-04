@@ -68,16 +68,16 @@ std::string Extension::prependBaseUrl(const std::string &path) const
   return result;
 }
 
-std::tuple<std::vector<std::shared_ptr<Manga_t>>, bool> Extension::getLatests(int page)
+std::tuple<std::vector<std::shared_ptr<Manga_t>>, bool> Extension::getLatests(int page) const
 {
   const auto res = latestsRequest(max(page, 1));
-  if (res.empty())
-    throw std::runtime_error("No results");
+  if (res->body.empty())
+    throw std::runtime_error("No results: " + std::to_string(res->statusCode));
 
   if (useApi)
-    return parseLatestEntries(res);
+    return parseLatestEntries(*res);
 
-  HTML html {res};
+  HTML html {res->body};
   try {
     return parseLatestEntries(html);
   } catch (...) {
@@ -105,18 +105,17 @@ std::tuple<std::vector<std::shared_ptr<Manga_t>>, bool> Extension::getLatests(in
   return std::make_tuple(result, hasNext);
 }
 
-std::tuple<std::vector<std::shared_ptr<Manga_t>>, bool> Extension::searchManga(int page,
-                                                                               const std::string &query,
-                                                                               const std::vector<FilterKV> &filters)
+std::tuple<std::vector<std::shared_ptr<Manga_t>>, bool> Extension::searchManga(
+  int page, const std::string &query, const std::vector<FilterKV> &filters) const
 {
   const auto res = searchMangaRequest(max(page, 1), query, filters);
-  if (res.empty())
-    throw std::runtime_error("No results");
+  if (res->body.empty())
+    throw std::runtime_error("No results: " + std::to_string(res->statusCode));
 
   if (useApi)
-    return parseSearchEntries(res);
+    return parseSearchEntries(*res);
 
-  HTML html {res};
+  HTML html {res->body};
   try {
     return parseSearchEntries(html);
   } catch (...) {
@@ -144,17 +143,17 @@ std::tuple<std::vector<std::shared_ptr<Manga_t>>, bool> Extension::searchManga(i
   return std::make_tuple(result, hasNext);
 }
 
-std::shared_ptr<Manga_t> Extension::getManga(const std::string &path)
+std::shared_ptr<Manga_t> Extension::getManga(const std::string &path) const
 {
-  const std::string res = http.get(prependBaseUrl(path));
-  if (res.empty())
-    throw std::runtime_error("No results");
+  auto res = client.get(prependBaseUrl(path));
+  if (res->body.empty())
+    throw std::runtime_error("No results: " + std::to_string(res->statusCode));
 
   std::shared_ptr<Manga_t> result {nullptr};
   if (useApi) {
-    result = parseManga(res);
+    result = parseManga(*res);
   } else {
-    HTML html {res};
+    HTML html {res->body};
     result = parseManga(html);
   }
 
@@ -164,16 +163,16 @@ std::shared_ptr<Manga_t> Extension::getManga(const std::string &path)
   return result;
 }
 
-std::vector<std::shared_ptr<Chapter_t>> Extension::getChapters(const Manga_t &manga)
+std::vector<std::shared_ptr<Chapter_t>> Extension::getChapters(const Manga_t &manga) const
 {
   const auto res = chaptersRequest(manga);
-  if (res.empty())
-    throw std::runtime_error("No results");
+  if (res->body.empty())
+    throw std::runtime_error("No results: " + std::to_string(res->statusCode));
 
   if (useApi)
-    return parseChapterEntries(manga, res);
+    return parseChapterEntries(manga, *res);
 
-  HTML html {res};
+  HTML html {res->body};
   try {
     return parseChapterEntries(manga, html);
   } catch (...) {
@@ -193,26 +192,26 @@ std::vector<std::shared_ptr<Chapter_t>> Extension::getChapters(const Manga_t &ma
   return result;
 }
 
-std::vector<std::shared_ptr<Chapter_t>> Extension::getChapters(const std::string &path)
+std::vector<std::shared_ptr<Chapter_t>> Extension::getChapters(const std::string &path) const
 {
   const auto manga = getManga(path);
   return getChapters(*manga);
 }
 
-std::vector<std::string> Extension::getPages(const std::string &path)
+std::vector<std::string> Extension::getPages(const std::string &path) const
 {
   const auto res = pagesRequest(path);
-  if (res.empty())
-    throw std::runtime_error("No results");
+  if (res->body.empty())
+    throw std::runtime_error("No results: " + std::to_string(res->statusCode));
 
   if (useApi)
-    return parsePages(res);
+    return parsePages(*res);
 
-  HTML html {res};
+  HTML html {res->body};
   return parsePages(html);
 }
 
-const std::map<std::string, Filter> &Extension::getFiltersMap()
+const std::map<std::string, Filter> &Extension::getFiltersMap() const
 {
   return filtersMap;
 }

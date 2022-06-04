@@ -6,12 +6,25 @@
 #include <vector>
 
 #include <gumbo-query/src/Document.h>
+#include <gumbo-query/src/Node.h>
 
-class CNode;
+class Element;
+
+class HTML
+{
+  CDocument document {};
+
+public:
+  HTML(const std::string &document);
+
+  std::vector<std::shared_ptr<Element>> select(const std::string &selector);
+  std::shared_ptr<Element> selectFirst(const std::string &selector);
+  std::shared_ptr<Element> selectLast(const std::string &selector);
+};
 
 class Element
 {
-  std::shared_ptr<CNode> node_ {nullptr};
+  std::shared_ptr<CNode> node {nullptr};
 
 public:
   Element(const CNode &node);
@@ -31,18 +44,6 @@ public:
   std::string text();
 
   bool isValid();
-};
-
-class HTML
-{
-  CDocument document_;
-
-public:
-  HTML(const std::string &document);
-
-  std::vector<std::shared_ptr<Element>> select(const std::string &selector);
-  std::shared_ptr<Element> selectFirst(const std::string &selector);
-  std::shared_ptr<Element> selectLast(const std::string &selector);
 };
 
 #endif  // NONBIRI_CORE_PARSER_H_
