@@ -12,7 +12,7 @@ std::shared_ptr<Response> post(const std::string &url, const std::string &body, 
   return Client().post(url, body, headers);
 }
 
-std::shared_ptr<Response> send(const Request &request)
+std::shared_ptr<Response> send(Request &request)
 {
   return Client().send(request);
 }
