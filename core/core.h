@@ -28,21 +28,21 @@ extern getError_t getError;
 namespace Core
 {
 typedef void (*initialize_t)(Http::init_t,
-                             Http::setOpt_t,
-                             Http::perform_t,
-                             Http::cleanup_t,
-                             Http::getInfo_t,
-                             Http::slist_append_t,
-                             Http::slist_freeAll_t,
-                             Http::getError_t);
+  Http::setOpt_t,
+  Http::perform_t,
+  Http::cleanup_t,
+  Http::getInfo_t,
+  Http::slist_append_t,
+  Http::slist_freeAll_t,
+  Http::getError_t);
 
 EXPORT_API void initialize(Http::init_t,
-                           Http::setOpt_t,
-                           Http::perform_t,
-                           Http::cleanup_t,
-                           Http::getInfo_t,
-                           Http::slist_append_t,
-                           Http::slist_freeAll_t,
-                           Http::getError_t);
+  Http::setOpt_t,
+  Http::perform_t,
+  Http::cleanup_t,
+  Http::getInfo_t,
+  Http::slist_append_t,
+  Http::slist_freeAll_t,
+  Http::getError_t);
 };  // namespace Core
 #endif  // NONBIRI_CORE_CORE_H_

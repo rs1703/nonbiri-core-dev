@@ -2,7 +2,6 @@
 #define NONBIRI_CORE_EXTENSION_H_
 
 #include <atomic>
-#include <map>
 #include <memory>
 #include <stdexcept>
 #include <string>
@@ -13,6 +12,7 @@
 #include <core/http/http.h>
 #include <core/models.h>
 #include <core/parser.h>
+#include <core/prefs.h>
 #include <core/utility.h>
 
 #define ErrNotImplemented throw std::runtime_error("Not implemented")
@@ -27,29 +27,23 @@ struct ExtensionInfo
   bool isNsfw {};
 };
 
-class Manager;
-class Api;
-class Web;
-
 class Extension : public ExtensionInfo
 {
   friend class Manager;
   friend class Api;
   friend class Web;
 
-  std::map<std::string, Filter> filtersMap {};
   std::atomic_bool hasUpdate {};
 
 protected:
   Http::Client client {};
+  Filters filters {};
 
 public:
   bool useApi {};
 
   Extension();
   ~Extension();
-
-  void init();
 
   virtual std::string latestsSelector() const
   {
@@ -92,9 +86,8 @@ public:
     return NULL;
   }
 
-  virtual std::shared_ptr<Http::Response> searchMangaRequest(int page,
-                                                             const std::string &query,
-                                                             const std::vector<FilterKV> &filters) const
+  virtual std::shared_ptr<Http::Response> searchMangaRequest(
+    int page, const std::string &query, const std::vector<Filter::Pair> &filters) const
   {
     return NULL;
   }
@@ -135,8 +128,8 @@ public:
     return NULL;
   }
 
-  virtual std::vector<std::shared_ptr<Chapter_t>> parseChapterEntries(const Manga_t &manga,
-                                                                      const Http::Response &response) const
+  virtual std::vector<std::shared_ptr<Chapter_t>> parseChapterEntries(
+    const Manga_t &manga, const Http::Response &response) const
   {
     ErrNotImplemented;
   }
@@ -166,7 +159,7 @@ public:
     ErrNotImplemented;
   }
 
-  virtual const std::vector<Filter> &getFilters() const
+  virtual Prefs *getPrefs() const
   {
     ErrNotImplemented;
   }
@@ -176,25 +169,21 @@ protected:
 
 private:
   std::tuple<std::vector<std::shared_ptr<Manga_t>>, bool> getLatests(int page = 1) const;
-  std::tuple<std::vector<std::shared_ptr<Manga_t>>, bool> searchManga(int page = 1,
-                                                                      const std::string &query = "",
-                                                                      const std::vector<FilterKV> &filters = {}) const;
+  std::tuple<std::vector<std::shared_ptr<Manga_t>>, bool> searchManga(
+    int page = 1, const std::string &query = "", const std::vector<Filter::Pair> &filters = {}) const;
   std::shared_ptr<Manga_t> getManga(const std::string &path) const;
   std::vector<std::shared_ptr<Chapter_t>> getChapters(const Manga_t &manga) const;
   std::vector<std::shared_ptr<Chapter_t>> getChapters(const std::string &path) const;
   std::vector<std::string> getPages(const std::string &path) const;
 
-  const std::map<std::string, Filter> &getFiltersMap() const;
+  const std::map<std::string, const Filter> &getFilters() const;
 };
 
 typedef Extension *(*create_t)();
 #define RegisterExtension(extension) \
   EXPORT_API extension *create() \
   { \
-    auto ext = new extension(); \
-    ext->init(); \
-\
-    return ext; \
+    return new extension(); \
   }
 
 #endif  // NONBIRI_CORE_EXTENSION_H_

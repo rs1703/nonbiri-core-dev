@@ -1,61 +1,100 @@
 #ifndef NONBIRI_CORE_FILTERS_H_
 #define NONBIRI_CORE_FILTERS_H_
 
-#include <map>
 #include <string>
+#include <vector>
 
 #include <json/json.h>
 
-struct FilterKV
-{
-  std::string key {};
-  std::string value {};
-};
-
 struct Filter
 {
-  std::string name {};
-  std::string key {};
-  std::map<std::string, std::string> options {};
+  friend class Manager;
+  friend class Api;
+  friend class Web;
+
+  using string = std::string;
+
+  struct Pair
+  {
+    friend class Filter;
+
+    const string key {};
+    const string value {};
+
+  private:
+    Json::Value toJson() const;
+  };
+
+  struct Option
+  {
+    friend class Filter;
+
+    const string key {};
+    const string value {};
+    const bool defaultOption {};
+
+  private:
+    Json::Value toJson() const;
+  };
+
+  using Options = std::vector<Option>;
+
+  const string key {};
+  const string title {};
+  const string description {};
+  const Options options {};
 
   Filter() = default;
-  Filter(const std::string &name,
-         const std::string &key,
-         const std::map<std::string, std::string> &options,
-         const std::string &type = "")
-    : name {name}, key {key}, options {options}, type {type}
-  {
-  }
+  Filter(const Filter &);
 
-  Json::Value toJson() const;
-  std::string toString() const;
+  Filter(const string &key, const string &title, const Options &options, const string &type);
+  Filter(const string &key, const string &title, const string &description, const Options &options, const string &type);
 
 private:
-  std::string type {};
+  string type {};
+
+  Json::Value toJson() const;
+  string toString() const;
+};
+
+class Filters
+{
+  std::map<std::string, const Filter> filters {};
+
+public:
+  Filters() = default;
+
+  void add(const Filter &filter);
+  void remove(const Filter &filter);
+  void remove(const std::string &key);
+  const std::map<std::string, const Filter> &get() const;
 };
 
 struct Checkbox : public Filter
 {
-  Checkbox(const std::string &name, const std::string &key, const std::map<std::string, std::string> &options)
-    : Filter {name, key, options, "checkbox"}
-  {
-  }
+  using string  = std::string;
+  using Options = std::vector<Filter::Option>;
+
+  Checkbox(const string &key, const string &title, const Options &options);
+  Checkbox(const string &key, const string &title, const string &description, const Options &options);
 };
 
 struct Radio : public Filter
 {
-  Radio(const std::string &name, const std::string &key, const std::map<std::string, std::string> &options)
-    : Filter {name, key, options, "radio"}
-  {
-  }
+  using string  = std::string;
+  using Options = std::vector<Filter::Option>;
+
+  Radio(const string &key, const string &title, const Options &options);
+  Radio(const string &key, const string &title, const string &description, const Options &options);
 };
 
 struct Select : public Filter
 {
-  Select(const std::string &name, const std::string &key, const std::map<std::string, std::string> &options)
-    : Filter {name, key, options, "select"}
-  {
-  }
+  using string  = std::string;
+  using Options = std::vector<Filter::Option>;
+
+  Select(const string &key, const string &title, const Options &options);
+  Select(const string &key, const string &title, const string &description, const Options &options);
 };
 
 #endif  // NONBIRI_CORE_FILTERS_H_

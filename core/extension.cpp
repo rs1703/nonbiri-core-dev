@@ -44,17 +44,6 @@ Extension::~Extension()
   // std::cout << "Extension::~Extension()" << std::endl;
 }
 
-void Extension::init()
-{
-  try {
-    const auto &filters = getFilters();
-    for (const auto &filter : filters)
-      filtersMap[filter.key] = filter;
-  } catch (...) {
-    // ignore
-  }
-}
-
 std::string Extension::prependBaseUrl(const std::string &path) const
 {
   if (path.find(baseUrl) == 0 || path.find("http") == 0)
@@ -85,7 +74,7 @@ std::tuple<std::vector<std::shared_ptr<Manga_t>>, bool> Extension::getLatests(in
   }
 
   const auto selector = latestsSelector();
-  const auto entries = html.select(selector);
+  const auto entries  = html.select(selector);
   std::vector<std::shared_ptr<Manga_t>> result {};
 
   for (const auto &entry : entries) {
@@ -106,7 +95,7 @@ std::tuple<std::vector<std::shared_ptr<Manga_t>>, bool> Extension::getLatests(in
 }
 
 std::tuple<std::vector<std::shared_ptr<Manga_t>>, bool> Extension::searchManga(
-  int page, const std::string &query, const std::vector<FilterKV> &filters) const
+  int page, const std::string &query, const std::vector<Filter::Pair> &filters) const
 {
   const auto res = searchMangaRequest(max(page, 1), query, filters);
   if (res->body.empty())
@@ -123,7 +112,7 @@ std::tuple<std::vector<std::shared_ptr<Manga_t>>, bool> Extension::searchManga(
   }
 
   const auto selector = searchMangaSelector();
-  const auto entries = html.select(selector);
+  const auto entries  = html.select(selector);
   std::vector<std::shared_ptr<Manga_t>> result {};
 
   for (const auto &entry : entries) {
@@ -211,7 +200,7 @@ std::vector<std::string> Extension::getPages(const std::string &path) const
   return parsePages(html);
 }
 
-const std::map<std::string, Filter> &Extension::getFiltersMap() const
+const std::map<std::string, const Filter> &Extension::getFilters() const
 {
-  return filtersMap;
+  return filters.get();
 }
