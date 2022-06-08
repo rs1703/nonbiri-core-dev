@@ -1,6 +1,7 @@
 #ifndef NONBIRI_CORE_FILTERS_H_
 #define NONBIRI_CORE_FILTERS_H_
 
+#include <memory>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -61,15 +62,15 @@ private:
 
 class Filters
 {
-  std::unordered_map<std::string, const Filter> filters {};
+  std::unordered_map<std::string, std::shared_ptr<const Filter>> filters {};
 
 public:
   Filters() = default;
 
-  void add(const Filter &filter);
-  void remove(const Filter &filter);
+  void add(const Filter *filter);
+  void remove(const Filter *filter);
   void remove(const std::string &key);
-  const std::unordered_map<std::string, const Filter> &get() const;
+  const std::unordered_map<std::string, std::shared_ptr<const Filter>> &get() const;
 };
 
 struct Checkbox : public Filter

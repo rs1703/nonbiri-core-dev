@@ -69,14 +69,14 @@ std::string Filter::toString() const
   return writer.write(toJson());
 }
 
-void Filters::add(const Filter &filter)
+void Filters::add(const Filter *filter)
 {
-  filters.emplace(filter.key, filter);
+  filters.emplace(filter->key, std::shared_ptr<const Filter>(filter));
 }
 
-void Filters::remove(const Filter &filter)
+void Filters::remove(const Filter *filter)
 {
-  filters.erase(filter.key);
+  filters.erase(filter->key);
 }
 
 void Filters::remove(const std::string &key)
@@ -84,7 +84,7 @@ void Filters::remove(const std::string &key)
   filters.erase(key);
 }
 
-const std::unordered_map<std::string, const Filter> &Filters::get() const
+const std::unordered_map<std::string, std::shared_ptr<const Filter>> &Filters::get() const
 {
   return filters;
 }
