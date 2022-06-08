@@ -108,6 +108,11 @@ public:
     ErrNotImplemented;
   }
 
+  virtual std::shared_ptr<Http::Response> mangaRequest(const std::string &path) const
+  {
+    ErrNotImplemented;
+  }
+
   virtual std::shared_ptr<Manga_t> parseManga(const Http::Response &response) const
   {
     ErrNotImplemented;

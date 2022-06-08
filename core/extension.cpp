@@ -134,7 +134,7 @@ std::tuple<std::vector<std::shared_ptr<Manga_t>>, bool> Extension::searchManga(
 
 std::shared_ptr<Manga_t> Extension::getManga(const std::string &path) const
 {
-  auto res = client.get(prependBaseUrl(path));
+  const auto res = mangaRequest(path);
   if (res->body.empty())
     throw std::runtime_error("No results: " + std::to_string(res->statusCode));
 
