@@ -50,10 +50,11 @@ struct Filter
   Filter(const string &key, const string &title, const Options &options, const string &type);
   Filter(const string &key, const string &title, const string &description, const Options &options, const string &type);
 
+protected:
+  virtual Json::Value toJson() const;
+
 private:
   string type {};
-
-  Json::Value toJson() const;
   string toString() const;
 };
 
@@ -77,6 +78,23 @@ struct Checkbox : public Filter
 
   Checkbox(const string &key, const string &title, const Options &options);
   Checkbox(const string &key, const string &title, const string &description, const Options &options);
+};
+
+struct ExcludableCheckbox : public Filter
+{
+  using string  = std::string;
+  using Options = std::vector<Filter::Option>;
+
+  const string excludedKey {};
+
+  ExcludableCheckbox(const string &key, const string &excludedKey, const string &title, const Options &options);
+  ExcludableCheckbox(const string &key,
+    const string &excludedKey,
+    const string &title,
+    const string &description,
+    const Options &options);
+
+  Json::Value toJson() const override;
 };
 
 struct Radio : public Filter

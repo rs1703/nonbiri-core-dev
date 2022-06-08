@@ -100,6 +100,30 @@ Checkbox::Checkbox(
 {
 }
 
+ExcludableCheckbox::ExcludableCheckbox(
+  const string &key, const string &excludedKey, const string &title, const std::vector<Option> &options) :
+  Filter {key, title, options, "checkbox"},
+  excludedKey {excludedKey}
+{
+}
+
+ExcludableCheckbox::ExcludableCheckbox(const string &key,
+  const string &excludedKey,
+  const string &title,
+  const string &description,
+  const std::vector<Option> &options) :
+  Filter {key, title, description, options, "checkbox"},
+  excludedKey {excludedKey}
+{
+}
+
+Json::Value ExcludableCheckbox::toJson() const
+{
+  Json::Value root    = Filter::toJson();
+  root["excludedKey"] = excludedKey;
+  return root;
+}
+
 Radio::Radio(const string &key, const string &title, const std::vector<Option> &options) :
   Filter {key, title, options, "radio"}
 {
