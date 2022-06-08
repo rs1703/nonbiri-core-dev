@@ -84,7 +84,7 @@ void Filters::remove(const std::string &key)
   filters.erase(key);
 }
 
-const std::map<std::string, const Filter> &Filters::get() const
+const std::unordered_map<std::string, const Filter> &Filters::get() const
 {
   return filters;
 }

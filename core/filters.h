@@ -2,6 +2,7 @@
 #define NONBIRI_CORE_FILTERS_H_
 
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 #include <json/json.h>
@@ -60,7 +61,7 @@ private:
 
 class Filters
 {
-  std::map<std::string, const Filter> filters {};
+  std::unordered_map<std::string, const Filter> filters {};
 
 public:
   Filters() = default;
@@ -68,7 +69,7 @@ public:
   void add(const Filter &filter);
   void remove(const Filter &filter);
   void remove(const std::string &key);
-  const std::map<std::string, const Filter> &get() const;
+  const std::unordered_map<std::string, const Filter> &get() const;
 };
 
 struct Checkbox : public Filter
