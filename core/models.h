@@ -10,7 +10,7 @@ enum class MangaStatus
   Ongoing,
   Completed,
   Hiatus,
-  Dropped,
+  Cancelled,
 };
 
 struct Manga_t
