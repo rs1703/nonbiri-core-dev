@@ -47,7 +47,7 @@ std::shared_ptr<Response> Client::send(Request &request) const
 {
   CURL *curl = init();
   if (curl == nullptr)
-    return nullptr;
+    throw std::runtime_error("Failed to initialize curl");
 
   std::string body {};
 
