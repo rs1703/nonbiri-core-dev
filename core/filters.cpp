@@ -14,7 +14,7 @@ Json::Value Filter::Option::toJson() const
   json["key"]   = key;
   json["value"] = value;
   if (defaultOption)
-    json["defaultOption"] = defaultOption;
+    json["default"] = defaultOption;
   return json;
 }
 
@@ -24,6 +24,8 @@ Filter::Filter(const Filter &filter) :
   description(filter.description),
   options(filter.options),
   type(filter.type) {};
+
+Filter::Filter(const std::string &key) : key {key}, isHidden {true} {};
 
 Filter::Filter(const string &key, const string &title, const std::vector<Option> &options, const string &type) :
   key {key},
@@ -49,16 +51,21 @@ Filter::Filter(const string &key,
 Json::Value Filter::toJson() const
 {
   Json::Value root {};
-  root["key"]   = key;
-  root["title"] = title;
-  root["type"]  = type;
+  root["key"] = key;
 
-  if (!description.empty())
-    root["description"] = description;
+  if (isHidden) {
+    root["isHidden"] = isHidden;
+  } else {
+    root["title"] = title;
+    root["type"]  = type;
 
-  root["options"] = Json::Value(Json::arrayValue);
-  for (const auto &option : options)
-    root["options"].append(option.toJson());
+    if (!description.empty())
+      root["description"] = description;
+
+    root["options"] = Json::Value(Json::arrayValue);
+    for (const auto &option : options)
+      root["options"].append(option.toJson());
+  }
 
   return root;
 }
@@ -88,6 +95,8 @@ const std::unordered_map<std::string, std::shared_ptr<const Filter>> &Filters::g
 {
   return filters;
 }
+
+Hidden::Hidden(const std::string &key) : Filter {key} {}
 
 Checkbox::Checkbox(const string &key, const string &title, const std::vector<Option> &options) :
   Filter {key, title, options, "checkbox"}

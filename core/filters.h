@@ -45,10 +45,12 @@ struct Filter
   const string title {};
   const string description {};
   const Options options {};
+  const bool isHidden {};
 
   Filter() = default;
   Filter(const Filter &);
 
+  Filter(const std::string &key);
   Filter(const string &key, const string &title, const Options &options, const string &type);
   Filter(const string &key, const string &title, const string &description, const Options &options, const string &type);
 
@@ -71,6 +73,11 @@ public:
   void remove(const Filter *filter);
   void remove(const std::string &key);
   const std::unordered_map<std::string, std::shared_ptr<const Filter>> &get() const;
+};
+
+struct Hidden : public Filter
+{
+  Hidden(const std::string &key);
 };
 
 struct Checkbox : public Filter
