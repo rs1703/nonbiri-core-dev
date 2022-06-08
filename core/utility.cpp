@@ -78,4 +78,121 @@ bool strcmpi(const std::string &str1, const std::string &str2)
   }
   return true;
 }
+
+std::string capitalize(const std::string &str)
+{
+  std::string result = str;
+  for (size_t i {0}; i < result.size(); i++) {
+    if (std::isalpha(result[i]) && (i == 0 || std::isspace(result[i - 1])))
+      result[i] = toupper(result[i]);
+  }
+  return result;
+}
+
+std::string lowercase(const std::string &str)
+{
+  std::string result = str;
+  for (size_t i = 0; i < result.size(); i++)
+    result[i] = tolower(result[i]);
+  return result;
+}
+
+std::string uppercase(const std::string &str)
+{
+  std::string result = str;
+  for (size_t i = 0; i < result.size(); i++)
+    result[i] = toupper(result[i]);
+  return result;
+}
 }  // namespace Utils
+
+SearchParams::SearchParams(const std::vector<std::pair<std::string, std::string>> &params)
+{
+  for (auto &param : params)
+    add(param.first, param.second);
+}
+
+SearchParams::SearchParams(const std::string &url)
+{
+  size_t pos {0};
+  size_t length {url.length()};
+
+  while (pos < length) {
+    size_t next {url.find('&', pos)};
+    if (next == std::string::npos)
+      next = length;
+
+    size_t eq {url.find('=', pos)};
+    if (eq == std::string::npos || eq > next)
+      break;
+
+    std::string key {url.substr(pos, eq - pos)};
+    std::string val {url.substr(eq + 1, next - eq - 1)};
+    params[key].push_back(val);
+    pos = next + 1;
+  }
+}
+
+bool SearchParams::has(const std::string &key) const
+{
+  return params.find(key) != params.end();
+}
+
+const std::string &SearchParams::get(const std::string &key) const
+{
+  auto it {params.find(key)};
+  if (it == params.end())
+    return "";
+  return it->second.front();
+}
+
+const std::vector<std::string> &SearchParams::getAll(const std::string &key) const
+{
+  auto it {params.find(key)};
+  if (it == params.end())
+    return {};
+  return it->second;
+}
+
+void SearchParams::add(const std::string &key, const std::string &value)
+{
+  if (params.find(key) == params.end())
+    params[key] = {value};
+  else
+    params[key].push_back(value);
+}
+
+void SearchParams::add(const std::string &key, const std::vector<std::string> &values)
+{
+  if (params.find(key) == params.end())
+    params[key] = values;
+  else
+    params[key].insert(params[key].end(), values.begin(), values.end());
+}
+
+void SearchParams::set(const std::string &key, const std::string &value)
+{
+  params[key] = {value};
+}
+
+void SearchParams::set(const std::string &key, const std::vector<std::string> &values)
+{
+  params[key] = values;
+}
+
+std::string SearchParams::toString() const
+{
+  std::string result {};
+  size_t i {0};
+
+  for (const auto &[key, values] : params) {
+    for (const auto &value : values) {
+      if (i > 0)
+        result += '&';
+      result += key + '=' + value;
+      i++;
+    }
+  }
+
+  return result;
+}
