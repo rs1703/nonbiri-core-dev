@@ -14,7 +14,7 @@ Json::Value Filter::Option::toJson() const
   json["key"]   = key;
   json["value"] = value;
   if (defaultOption)
-    json["default"] = defaultOption;
+    json["defaultOption"] = defaultOption;
   return json;
 }
 
