@@ -78,22 +78,30 @@ std::string Filter::toString() const
 
 void Filters::add(const Filter *filter)
 {
-  filters.emplace(filter->key, std::shared_ptr<const Filter>(filter));
+  filters.push_back(std::shared_ptr<const Filter>(filter));
+  index[filter->key] = filters.size() - 1;
 }
 
 void Filters::remove(const Filter *filter)
 {
-  filters.erase(filter->key);
+  filters.erase(filters.begin() + index[filter->key]);
+  index.erase(filter->key);
 }
 
 void Filters::remove(const std::string &key)
 {
-  filters.erase(key);
+  filters.erase(filters.begin() + index[key]);
+  index.erase(key);
 }
 
-const std::unordered_map<std::string, std::shared_ptr<const Filter>> &Filters::get() const
+const std::vector<std::shared_ptr<const Filter>> &Filters::get() const
 {
   return filters;
+}
+
+const std::unordered_map<std::string, size_t> &Filters::getIndex() const
+{
+  return index;
 }
 
 Hidden::Hidden(const std::string &key) : Filter {key} {}

@@ -200,7 +200,12 @@ std::vector<std::string> Extension::getPages(const std::string &path) const
   return parsePages(html);
 }
 
-const std::unordered_map<std::string, std::shared_ptr<const Filter>> &Extension::getFilters() const
+const std::vector<std::shared_ptr<const Filter>> &Extension::getFilters() const
 {
   return filters.get();
+}
+
+const std::unordered_map<std::string, size_t> &Extension::getFiltersIndex() const
+{
+  return filters.getIndex();
 }

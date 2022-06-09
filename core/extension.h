@@ -182,7 +182,8 @@ private:
   std::vector<std::shared_ptr<Chapter_t>> getChapters(const std::string &path) const;
   std::vector<std::string> getPages(const std::string &path) const;
 
-  const std::unordered_map<std::string, std::shared_ptr<const Filter>> &getFilters() const;
+  const std::vector<std::shared_ptr<const Filter>> &getFilters() const;
+  const std::unordered_map<std::string, size_t> &getFiltersIndex() const;
 };
 
 typedef Extension *(*create_t)();

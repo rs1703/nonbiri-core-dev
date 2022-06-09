@@ -64,7 +64,8 @@ private:
 
 class Filters
 {
-  std::unordered_map<std::string, std::shared_ptr<const Filter>> filters {};
+  std::vector<std::shared_ptr<const Filter>> filters {};
+  std::unordered_map<std::string, size_t> index {};
 
 public:
   Filters() = default;
@@ -72,7 +73,8 @@ public:
   void add(const Filter *filter);
   void remove(const Filter *filter);
   void remove(const std::string &key);
-  const std::unordered_map<std::string, std::shared_ptr<const Filter>> &get() const;
+  const std::vector<std::shared_ptr<const Filter>> &get() const;
+  const std::unordered_map<std::string, size_t> &getIndex() const;
 };
 
 struct Hidden : public Filter
