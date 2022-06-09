@@ -71,8 +71,6 @@ public:
   Filters() = default;
 
   void add(const Filter *filter);
-  void remove(const Filter *filter);
-  void remove(const std::string &key);
   const std::vector<std::shared_ptr<const Filter>> &get() const;
   const std::unordered_map<std::string, size_t> &getIndex() const;
 };
