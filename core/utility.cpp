@@ -138,15 +138,15 @@ bool SearchParams::has(const std::string &key) const
   return params.find(key) != params.end();
 }
 
-const std::string &SearchParams::get(const std::string &key) const
+std::string SearchParams::get(const std::string &key) const
 {
   auto it {params.find(key)};
   if (it == params.end())
-    return "";
+    return NULL;
   return it->second.front();
 }
 
-const std::vector<std::string> &SearchParams::getAll(const std::string &key) const
+std::vector<std::string> SearchParams::getAll(const std::string &key) const
 {
   auto it {params.find(key)};
   if (it == params.end())

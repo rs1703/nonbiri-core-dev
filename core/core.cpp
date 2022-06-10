@@ -10,7 +10,7 @@ getInfo_t getInfo {nullptr};
 slist_append_t slist_append {nullptr};
 slist_freeAll_t slist_freeAll {nullptr};
 getError_t getError {nullptr};
-};  // namespace Http
+}  // namespace Http
 
 namespace Core
 {
@@ -32,4 +32,4 @@ void initialize(Http::init_t initPtr,
   Http::slist_freeAll = slist_freeAllPtr;
   Http::getError      = getErrorPtr;
 }
-};  // namespace Core
+}  // namespace Core

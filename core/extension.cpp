@@ -39,9 +39,125 @@ Extension::Extension()
 #endif
 }
 
-Extension::~Extension()
+std::string Extension::latestsSelector() const
 {
-  // std::cout << "Extension::~Extension()" << std::endl;
+  return NULL;
+}
+
+std::string Extension::latestsNextSelector() const
+{
+  return NULL;
+}
+
+std::shared_ptr<Http::Response> Extension::latestsRequest(int) const
+{
+  return NULL;
+}
+
+std::tuple<std::vector<std::shared_ptr<Manga_t>>, bool> Extension::parseLatestEntries(const Http::Response &) const
+{
+  ErrNotImplemented;
+}
+
+std::tuple<std::vector<std::shared_ptr<Manga_t>>, bool> Extension::parseLatestEntries(HTML &) const
+{
+  ErrNotImplemented;
+}
+
+std::shared_ptr<Manga_t> Extension::parseLatestEntry(Element &) const
+{
+  ErrNotImplemented;
+}
+
+std::string Extension::searchMangaSelector() const
+{
+  return NULL;
+}
+
+std::string Extension::searchMangaNextSelector() const
+{
+  return NULL;
+}
+
+std::shared_ptr<Http::Response> Extension::searchMangaRequest(
+  int, const std::string &, const std::vector<std::pair<std::string, std::string>> &) const
+{
+  return nullptr;
+}
+
+std::tuple<std::vector<std::shared_ptr<Manga_t>>, bool> Extension::parseSearchEntries(const Http::Response &) const
+{
+  ErrNotImplemented;
+}
+
+std::tuple<std::vector<std::shared_ptr<Manga_t>>, bool> Extension::parseSearchEntries(HTML &) const
+{
+  ErrNotImplemented;
+}
+
+std::shared_ptr<Manga_t> Extension::parseSearchEntry(Element &) const
+{
+  ErrNotImplemented;
+}
+
+std::shared_ptr<Http::Response> Extension::mangaRequest(const std::string &) const
+{
+  ErrNotImplemented;
+}
+
+std::shared_ptr<Manga_t> Extension::parseManga(const Http::Response &) const
+{
+  ErrNotImplemented;
+}
+
+std::shared_ptr<Manga_t> Extension::parseManga(HTML &) const
+{
+  ErrNotImplemented;
+}
+
+std::string Extension::chaptersSelector() const
+{
+  return NULL;
+}
+
+std::shared_ptr<Http::Response> Extension::chaptersRequest(const Manga_t &) const
+{
+  return nullptr;
+}
+
+std::vector<std::shared_ptr<Chapter_t>> Extension::parseChapterEntries(const Manga_t &, const Http::Response &) const
+{
+  ErrNotImplemented;
+}
+
+std::vector<std::shared_ptr<Chapter_t>> Extension::parseChapterEntries(const Manga_t &, HTML &) const
+{
+  ErrNotImplemented;
+}
+
+std::shared_ptr<Chapter_t> Extension::parseChapterEntry(const Manga_t &, Element &) const
+{
+  ErrNotImplemented;
+}
+
+std::shared_ptr<Http::Response> Extension::pagesRequest(const std::string &) const
+{
+  return nullptr;
+}
+
+std::vector<std::string> Extension::parsePages(const Http::Response &) const
+{
+  ErrNotImplemented;
+}
+
+std::vector<std::string> Extension::parsePages(HTML &) const
+{
+  ErrNotImplemented;
+}
+
+Pref::Prefs *Extension::prefs() const
+{
+  return nullptr;
 }
 
 std::string Extension::prependBaseUrl(const std::string &path) const
@@ -95,7 +211,7 @@ std::tuple<std::vector<std::shared_ptr<Manga_t>>, bool> Extension::getLatests(in
 }
 
 std::tuple<std::vector<std::shared_ptr<Manga_t>>, bool> Extension::searchManga(
-  int page, const std::string &query, const std::vector<Filter::Pair> &filters) const
+  int page, const std::string &query, const std::vector<std::pair<std::string, std::string>> &filters) const
 {
   const auto res = searchMangaRequest(max(page, 1), query, filters);
   if (res->body.empty())
@@ -200,12 +316,12 @@ std::vector<std::string> Extension::getPages(const std::string &path) const
   return parsePages(html);
 }
 
-const std::vector<std::shared_ptr<const Filter>> &Extension::getFilters() const
+const std::vector<std::shared_ptr<const Filter::Filter>> &Extension::getFilters() const
 {
   return filters.get();
 }
 
-const std::unordered_map<std::string, size_t> &Extension::getFiltersIndex() const
+const std::map<std::string, size_t> &Extension::getFiltersIndex() const
 {
   return filters.getIndex();
 }

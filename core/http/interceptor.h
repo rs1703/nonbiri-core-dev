@@ -26,6 +26,6 @@ struct Interceptor
 
   virtual std::shared_ptr<Response> intercept(Chain &chain) = 0;
 };
-};  // namespace Http
+}  // namespace Http
 
 #endif  // NONBIRI_CORE_HTTP_INTERCEPTOR_H_

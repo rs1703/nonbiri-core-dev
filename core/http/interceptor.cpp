@@ -15,8 +15,8 @@ std::shared_ptr<Response> Interceptor::Chain::proceed()
   if (done)
     return mResponse;
 
-  done = true;
+  done      = true;
   mResponse = mClient.send(mRequest);
   return mResponse;
 }
-};  // namespace Http
+}  // namespace Http

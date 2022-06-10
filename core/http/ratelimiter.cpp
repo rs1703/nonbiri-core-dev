@@ -13,8 +13,8 @@ void RateLimiter::acquire()
   std::lock_guard lock {mutex};
 
   auto seconds = std::chrono::seconds(period);
-  auto now = std::chrono::system_clock::now();
-  auto next = lastAcquired + seconds;
+  auto now     = std::chrono::system_clock::now();
+  auto next    = lastAcquired + seconds;
 
   if (now > next) {
     tokens = size;
@@ -26,4 +26,4 @@ void RateLimiter::acquire()
   lastAcquired = now;
   --tokens;
 }
-};  // namespace Http
+}  // namespace Http

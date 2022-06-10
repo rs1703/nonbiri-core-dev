@@ -61,9 +61,10 @@ std::shared_ptr<Response> Client::send(Request &request) const
   if (Utils::strcmpi(request.method, "POST") && !request.body.empty())
     setOpt(curl, CURLOPT_POSTFIELDS, request.body.c_str());
 
-  Headers headers {defaultHeaders};
-  headers.join(request.headers);
-  request.headers = headers;
+  Headers headers = std::move(request.headers);
+  headers.join(defaultHeaders);
+  headers.join(headers);
+
   if (!headers.has("User-Agent"))
     headers.set("User-Agent", userAgent);
   setOpt(curl, CURLOPT_HTTPHEADER, headers.build());

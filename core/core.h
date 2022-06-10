@@ -23,7 +23,7 @@ extern getInfo_t getInfo;
 extern slist_append_t slist_append;
 extern slist_freeAll_t slist_freeAll;
 extern getError_t getError;
-};  // namespace Http
+}  // namespace Http
 
 namespace Core
 {
@@ -44,5 +44,5 @@ EXPORT_API void initialize(Http::init_t,
   Http::slist_append_t,
   Http::slist_freeAll_t,
   Http::getError_t);
-};  // namespace Core
+}  // namespace Core
 #endif  // NONBIRI_CORE_CORE_H_

@@ -25,7 +25,7 @@ bool strcmpi(const std::string &str1, const std::string &str2);
 std::string capitalize(const std::string &str);
 std::string lowercase(const std::string &str);
 std::string uppercase(const std::string &str);
-};  // namespace Utils
+}  // namespace Utils
 
 class SearchParams
 {
@@ -37,8 +37,8 @@ public:
   explicit SearchParams(const std::string &url);
 
   bool has(const std::string &key) const;
-  const std::string &get(const std::string &key) const;
-  const std::vector<std::string> &getAll(const std::string &key) const;
+  std::string get(const std::string &key) const;
+  std::vector<std::string> getAll(const std::string &key) const;
 
   void add(const std::string &key, const std::string &value);
   void add(const std::string &key, const std::vector<std::string> &values);

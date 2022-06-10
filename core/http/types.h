@@ -30,7 +30,7 @@ public:
   bool empty() const;
   void clear();
 
-  using iterator = std::map<std::string, std::string>::iterator;
+  using iterator       = std::map<std::string, std::string>::iterator;
   using const_iterator = std::map<std::string, std::string>::const_iterator;
 
   iterator begin();
@@ -58,6 +58,6 @@ struct Response
   Response(const std::string &body, long statusCode) : body {body}, statusCode {statusCode} {}
   Response(long statusCode, const std::string &body) : body {body}, statusCode {statusCode} {}
 };
-};  // namespace Http
+}  // namespace Http
 
 #endif  // NONBIRI_CORE_HTTP_STRUCT_H_

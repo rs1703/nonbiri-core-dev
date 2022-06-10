@@ -18,6 +18,6 @@ public:
   RateLimiter(int64_t size, int64_t period = 1);
   void acquire();
 };
-};  // namespace Http
+}  // namespace Http
 
 #endif  // NONBIRI_CORE_HTTP_RATELIMITER_H_

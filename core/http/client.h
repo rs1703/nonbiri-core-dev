@@ -33,6 +33,6 @@ public:
   void addInterceptor(std::shared_ptr<Interceptor> interceptor);
   void addInterceptor(Interceptor *interceptor);
 };
-};  // namespace Http
+}  // namespace Http
 
 #endif  // NONBIRI_CORE_HTTP_CLIENT_H_

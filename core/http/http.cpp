@@ -21,4 +21,4 @@ int download(const std::string &url, const std::string &path)
 {
   return Client().download(url, path);
 }
-};  // namespace Http
+}  // namespace Http

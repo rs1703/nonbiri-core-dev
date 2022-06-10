@@ -15,6 +15,6 @@ std::shared_ptr<Response> get(const std::string &url, const Headers &headers = {
 std::shared_ptr<Response> post(const std::string &url, const std::string &body, const Headers &headers = {});
 std::shared_ptr<Response> send(Request &request);
 int download(const std::string &url, const std::string &path);
-};  // namespace Http
+}  // namespace Http
 
 #endif  // NONBIRI_CORE_HTTP_H_
