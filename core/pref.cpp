@@ -1,6 +1,5 @@
 #include <filesystem>
 #include <fstream>
-#include <iostream>
 
 #include <core/extension.h>
 #include <core/pref.h>
@@ -91,7 +90,6 @@ Json::Value Select::toJson(bool full) const
 
 Prefs::Prefs(const std::string &id)
 {
-  std::cout << "Prefs::Prefs" << std::endl;
   path = prefsDir / (id + ".json");
   if (!fs::exists(prefsDir))
     fs::create_directory(prefsDir);
@@ -139,8 +137,7 @@ void Prefs::add(Pref *pref)
     index[pref->key] = prefs.size() - 1;
   } else {
     pref->value = prefs[it->second]->value;
-    delete prefs[it->second].get();
-    prefs[it->second] = std::shared_ptr<Pref> {pref};
+    prefs[it->second].reset(pref);
   }
   save();
 }
