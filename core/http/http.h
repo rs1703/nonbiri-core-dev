@@ -1,5 +1,5 @@
-#ifndef NONBIRI_CORE_HTTP_H_
-#define NONBIRI_CORE_HTTP_H_
+#ifndef NONBIRI_CORE_HTTP_HTTP_H_
+#define NONBIRI_CORE_HTTP_HTTP_H_
 
 #include <memory>
 #include <string>
@@ -17,4 +17,4 @@ std::shared_ptr<Response> send(Request &request);
 int download(const std::string &url, const std::string &path);
 }  // namespace Http
 
-#endif  // NONBIRI_CORE_HTTP_H_
+#endif  // NONBIRI_CORE_HTTP_HTTP_H_
