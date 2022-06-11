@@ -17,9 +17,9 @@ namespace Filter
 {
 enum State
 {
-  DISABLED,
-  ENABLED,
-  EXCLUDED,
+  Disabled,
+  Enabled,
+  Excluded,
 };
 
 struct Option
@@ -28,7 +28,7 @@ struct Option
 
   const std::string key {};
   const std::string value {};
-  const State defaultState {DISABLED};
+  const State defaultState {Disabled};
 
 private:
   Json::Value toJson() const;
