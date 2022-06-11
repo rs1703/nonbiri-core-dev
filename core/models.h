@@ -20,7 +20,7 @@ struct Manga_t
   std::string title {};
   std::string description {};
 
-  MangaStatus status {MangaStatus::None};
+  MangaStatus status {None};
 
   std::vector<std::string> artists {};
   std::vector<std::string> authors {};

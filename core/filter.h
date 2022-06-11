@@ -15,13 +15,20 @@ class Web;
 
 namespace Filter
 {
+enum State
+{
+  DISABLED,
+  ENABLED,
+  EXCLUDED,
+};
+
 struct Option
 {
   friend class Filter;
 
   const std::string key {};
   const std::string value {};
-  const bool defaultOption {};
+  const State defaultState {DISABLED};
 
 private:
   Json::Value toJson() const;
