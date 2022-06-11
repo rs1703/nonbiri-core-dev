@@ -13,7 +13,6 @@
 #include <core/http.h>
 #include <core/models.h>
 #include <core/parser.h>
-#include <core/pref.h>
 #include <core/utility.h>
 #include <json/json.h>
 
@@ -83,8 +82,6 @@ public:
   virtual std::vector<std::string> parsePages(const Http::Response &response) const;
   virtual std::vector<std::string> parsePages(HTML &html) const;
 
-  virtual Pref::Prefs *prefs() const;
-
 protected:
   std::string prependBaseUrl(const std::string &path) const;
 
@@ -106,12 +103,6 @@ typedef Extension *(*create_t)();
   EXPORT_API extension *create() \
   { \
     return new extension(); \
-  }
-
-#define WithPrefs(extension) \
-  Pref::Prefs *extension::prefs() const \
-  { \
-    return const_cast<Pref::Prefs *>((const Pref::Prefs *)this); \
   }
 
 #endif  // NONBIRI_CORE_EXTENSION_EXTENSION_H_

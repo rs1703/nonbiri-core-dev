@@ -93,7 +93,7 @@ class Prefs
 public:
   Prefs() = delete;
   Prefs(const std::string &id);
-  ~Prefs();
+  virtual ~Prefs();
 
   void add(Pref *pref);
   const std::shared_ptr<Pref> get(const std::string &key) const;

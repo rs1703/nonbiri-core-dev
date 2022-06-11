@@ -146,11 +146,6 @@ std::vector<std::string> Extension::parsePages(HTML &) const
   ErrNotImplemented;
 }
 
-Pref::Prefs *Extension::prefs() const
-{
-  return nullptr;
-}
-
 std::string Extension::prependBaseUrl(const std::string &path) const
 {
   if (path.find(baseUrl) == 0 || path.find("http") == 0)
