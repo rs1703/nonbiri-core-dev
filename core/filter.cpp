@@ -7,7 +7,7 @@ Json::Value Option::toJson() const
   Json::Value json;
   json["key"]   = key;
   json["value"] = value;
-  if (defaultState > DISABLED)
+  if (defaultState > State::Disabled)
     json["defaultState"] = defaultState;
   return json;
 }

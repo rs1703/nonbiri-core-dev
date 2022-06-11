@@ -28,7 +28,7 @@ struct Option
 
   const std::string key {};
   const std::string value {};
-  const State defaultState {Disabled};
+  const State defaultState {State::Disabled};
 
 private:
   Json::Value toJson() const;
