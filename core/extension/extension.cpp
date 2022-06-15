@@ -2,30 +2,30 @@
 
 Extension::Extension()
 {
-#ifdef DOMAIN
-  domain = DOMAIN;
+#ifdef EXTENSION_DOMAIN_NAME
+  domain = EXTENSION_DOMAIN_NAME;
 #endif
 
-#ifdef BASE_URL
-  baseUrl = BASE_URL;
+#ifdef EXTENSION_BASE_URL
+  baseUrl = EXTENSION_BASE_URL;
 #endif
 
   if (baseUrl.back() == '/')
     baseUrl.pop_back();
 
-#ifdef NAME
-  name = NAME;
+#ifdef EXTENSION_NAME
+  name = EXTENSION_NAME;
 #endif
 
-#ifdef LANGUAGE
-  language = LANGUAGE;
+#ifdef EXTENSION_LANGUAGE
+  language = EXTENSION_LANGUAGE;
 #endif
 
-#ifdef VERSION
-  version = VERSION;
+#ifdef EXTENSION_VERSION
+  version = EXTENSION_VERSION;
 #endif
 
-#ifdef IS_NSFW
+#ifdef EXTENSION_IS_NSFW
   isNsfw = true;
 #endif
 }
