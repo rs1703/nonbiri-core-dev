@@ -57,7 +57,7 @@ curl_slist *Headers::build()
   return list;
 }
 
-using iterator       = std::map<std::string, std::string>::iterator;
+using iterator = std::map<std::string, std::string>::iterator;
 using const_iterator = std::map<std::string, std::string>::const_iterator;
 
 iterator Headers::begin()

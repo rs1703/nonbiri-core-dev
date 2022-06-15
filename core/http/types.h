@@ -30,7 +30,7 @@ public:
   bool empty() const;
   void clear();
 
-  using iterator       = std::map<std::string, std::string>::iterator;
+  using iterator = std::map<std::string, std::string>::iterator;
   using const_iterator = std::map<std::string, std::string>::const_iterator;
 
   iterator begin();

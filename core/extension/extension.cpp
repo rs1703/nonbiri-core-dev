@@ -178,11 +178,11 @@ const std::map<std::string, size_t> &Extension::getFiltersIndex() const
 Json::Value ExtensionInfo::toJson() const
 {
   Json::Value root {};
-  root["id"]       = id;
-  root["name"]     = name;
-  root["baseUrl"]  = baseUrl;
+  root["id"] = id;
+  root["name"] = name;
+  root["baseUrl"] = baseUrl;
   root["language"] = language;
-  root["version"]  = version;
-  root["isNsfw"]   = isNsfw;
+  root["version"] = version;
+  root["isNsfw"] = isNsfw;
   return root;
 }

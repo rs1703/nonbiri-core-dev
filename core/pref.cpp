@@ -17,16 +17,16 @@ Pref::Pref(const Info &info) : Info {info}
 
 Pref::Pref(const Json::Value &json)
 {
-  key         = json["key"].asString();
-  title       = json["title"].asString();
+  key = json["key"].asString();
+  title = json["title"].asString();
   description = json["description"].asString();
-  value       = json["value"];
+  value = json["value"];
 }
 
 Json::Value Pref::toJson(bool full) const
 {
   Json::Value root {};
-  root["key"]   = key;
+  root["key"] = key;
   root["title"] = title;
 
   if (!description.empty())
@@ -37,7 +37,7 @@ Json::Value Pref::toJson(bool full) const
   if (full) {
     for (const auto &[key, value] : options) {
       Json::Value option {};
-      option["key"]   = key;
+      option["key"] = key;
       option["value"] = value;
       root["options"].append(option);
     }
@@ -51,7 +51,7 @@ Checkbox::Checkbox(const Json::Value &json) : Pref {json} {}
 Json::Value Checkbox::toJson(bool full) const
 {
   Json::Value root = Pref::toJson(full);
-  root["type"]     = "checkbox";
+  root["type"] = "checkbox";
   return root;
 }
 
@@ -63,7 +63,7 @@ ExcludableCheckbox::ExcludableCheckbox(const std::string &excludedKey, const Jso
 
 Json::Value ExcludableCheckbox::toJson(bool full) const
 {
-  Json::Value root    = Checkbox::toJson(full);
+  Json::Value root = Checkbox::toJson(full);
   root["excludedKey"] = excludedKey;
   return root;
 }
@@ -74,7 +74,7 @@ Radio::Radio(const Json::Value &json) : Pref {json} {}
 Json::Value Radio::toJson(bool full) const
 {
   Json::Value root = Pref::toJson(full);
-  root["type"]     = "radio";
+  root["type"] = "radio";
   return root;
 }
 
@@ -84,7 +84,7 @@ Select::Select(const Json::Value &json) : Pref {json} {}
 Json::Value Select::toJson(bool full) const
 {
   Json::Value root = Pref::toJson(full);
-  root["type"]     = "select";
+  root["type"] = "select";
   return root;
 }
 

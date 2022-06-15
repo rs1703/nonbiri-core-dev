@@ -5,7 +5,7 @@ namespace Filter
 Json::Value Option::toJson() const
 {
   Json::Value json;
-  json["key"]   = key;
+  json["key"] = key;
   json["value"] = value;
   if (defaultState > State::Disabled)
     json["defaultState"] = defaultState;
@@ -41,7 +41,7 @@ Checkbox::Checkbox(const Info &info) : Filter {info} {}
 Json::Value Checkbox::toJson() const
 {
   Json::Value root = Filter::toJson();
-  root["type"]     = "checkbox";
+  root["type"] = "checkbox";
   return root;
 }
 
@@ -49,7 +49,7 @@ ExcludableCheckbox::ExcludableCheckbox(const std::string &excludedKey, const Inf
 
 Json::Value ExcludableCheckbox::toJson() const
 {
-  Json::Value root    = Checkbox::toJson();
+  Json::Value root = Checkbox::toJson();
   root["excludedKey"] = excludedKey;
   return root;
 }
@@ -59,7 +59,7 @@ Radio::Radio(const Info &info) : Filter {info} {}
 Json::Value Radio::toJson() const
 {
   Json::Value root = Filter::toJson();
-  root["type"]     = "radio";
+  root["type"] = "radio";
   return root;
 }
 
@@ -68,7 +68,7 @@ Select::Select(const Info &info) : Filter {info} {}
 Json::Value Select::toJson() const
 {
   Json::Value root = Filter::toJson();
-  root["type"]     = "select";
+  root["type"] = "select";
   return root;
 }
 

@@ -89,8 +89,8 @@ private:
   virtual std::tuple<std::vector<std::shared_ptr<Manga_t>>, bool> getLatests(int page) const = 0;
   virtual std::tuple<std::vector<std::shared_ptr<Manga_t>>, bool> searchManga(
     int page, const std::string &query, const std::vector<std::pair<std::string, std::string>> &filters) const = 0;
-  virtual std::shared_ptr<Manga_t> getManga(const std::string &path) const                                     = 0;
-  virtual std::vector<std::shared_ptr<Chapter_t>> getChapters(const Manga_t &manga) const                      = 0;
+  virtual std::shared_ptr<Manga_t> getManga(const std::string &path) const = 0;
+  virtual std::vector<std::shared_ptr<Chapter_t>> getChapters(const Manga_t &manga) const = 0;
   virtual std::vector<std::shared_ptr<Chapter_t>> getChapters(const std::string &path) const;
   virtual std::vector<std::string> getPages(const std::string &path) const = 0;
 
