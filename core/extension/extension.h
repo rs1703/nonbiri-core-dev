@@ -25,7 +25,7 @@ struct ExtensionInfo
   friend class Api;
   friend class Web;
 
-  std::string id {};
+  std::string domain {};
   std::string baseUrl {};
   std::string name {};
   std::string language {};

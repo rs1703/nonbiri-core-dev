@@ -2,8 +2,8 @@
 
 Extension::Extension()
 {
-#ifdef ID
-  id = ID;
+#ifdef DOMAIN
+  domain = DOMAIN;
 #endif
 
 #ifdef BASE_URL
@@ -178,7 +178,7 @@ const std::map<std::string, size_t> &Extension::getFiltersIndex() const
 Json::Value ExtensionInfo::toJson() const
 {
   Json::Value root {};
-  root["id"] = id;
+  root["domain"] = domain;
   root["name"] = name;
   root["baseUrl"] = baseUrl;
   root["language"] = language;
