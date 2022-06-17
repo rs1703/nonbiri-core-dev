@@ -1,8 +1,11 @@
+#include <filesystem>
 #include <stdexcept>
 
 #include <core/core.h>
 #include <core/http/client.h>
 #include <core/utility.h>
+
+namespace fs = std::filesystem;
 
 static const std::string userAgent {
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 "
@@ -120,6 +123,9 @@ long Client::download(const std::string &url, const std::string &path) const
 
   cleanup(curl);
   fclose(fp);
+
+  if (statusCode != 200)
+    fs::remove(path);
 
   return static_cast<int>(statusCode);
 }
