@@ -33,6 +33,7 @@ struct ExtensionInfo
   bool isNsfw {};
 
 private:
+  std::string path {};
   Json::Value toJson() const;
 };
 
