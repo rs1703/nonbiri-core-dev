@@ -183,9 +183,11 @@ Json::Value ExtensionInfo::toJson() const
 {
   Json::Value root {};
   root["domain"] = domain;
-  root["name"] = name;
   if (!baseUrl.empty())
     root["baseUrl"] = baseUrl;
+  root["name"] = name;
+  if (!description.empty())
+    root["description"] = description;
   root["language"] = language;
   root["version"] = version;
   root["isNsfw"] = isNsfw;
