@@ -10,8 +10,6 @@ HTML::HTML(const std::string &document)
 std::vector<std::shared_ptr<Element>> HTML::select(const std::string &selector)
 {
   CSelection nodes = document.find(selector);
-  if (nodes.nodeNum() == 0)
-    return {};
   std::vector<std::shared_ptr<Element>> elements {};
   for (size_t i = 0; i < nodes.nodeNum(); i++)
     elements.push_back(std::make_shared<Element>(nodes.nodeAt(i)));
@@ -21,28 +19,29 @@ std::vector<std::shared_ptr<Element>> HTML::select(const std::string &selector)
 std::shared_ptr<Element> HTML::selectFirst(const std::string &selector)
 {
   CSelection nodes = document.find(selector);
-  if (nodes.nodeNum() == 0)
-    return nullptr;
   return std::make_shared<Element>(nodes.nodeAt(0));
 }
 
 std::shared_ptr<Element> HTML::selectLast(const std::string &selector)
 {
   CSelection nodes = document.find(selector);
-  if (nodes.nodeNum() == 0)
-    return nullptr;
   return std::make_shared<Element>(nodes.nodeAt(nodes.nodeNum() - 1));
 }
 
 Element::Element(const CNode &node) : node {std::make_shared<CNode>(node)} {}
-Element::Element(std::shared_ptr<CNode> node) : node {node} {}
-Element::Element(const Element &element) : node {element.node} {}
+
+Element::Element(std::shared_ptr<CNode> node) : node {node}
+{
+  if (this->node == nullptr) {
+    this->node = std::make_shared<CNode>();
+  }
+}
+
+Element::Element(const Element &element) : Element(element.node) {}
 
 std::vector<std::shared_ptr<Element>> Element::select(const std::string &selector)
 {
   CSelection nodes = node->find(selector);
-  if (nodes.nodeNum() == 0)
-    return {};
   std::vector<std::shared_ptr<Element>> elements {};
   for (size_t i = 0; i < nodes.nodeNum(); i++)
     elements.push_back(std::make_shared<Element>(nodes.nodeAt(i)));
@@ -52,41 +51,28 @@ std::vector<std::shared_ptr<Element>> Element::select(const std::string &selecto
 std::shared_ptr<Element> Element::selectFirst(const std::string &selector)
 {
   CSelection nodes = node->find(selector);
-  if (nodes.nodeNum() == 0)
-    return nullptr;
   return std::make_shared<Element>(nodes.nodeAt(0));
 }
 
 std::shared_ptr<Element> Element::selectLast(const std::string &selector)
 {
   CSelection nodes = node->find(selector);
-  if (nodes.nodeNum() == 0)
-    return nullptr;
   return std::make_shared<Element>(nodes.nodeAt(nodes.nodeNum() - 1));
 }
 
 std::shared_ptr<Element> Element::parent()
 {
-  CNode parent = node->parent();
-  if (!parent.valid())
-    return nullptr;
-  return std::make_shared<Element>(parent);
+  return std::make_shared<Element>(node->parent());
 }
 
 std::shared_ptr<Element> Element::previous()
 {
-  CNode prev = node->prevSibling();
-  if (!prev.valid())
-    return nullptr;
-  return std::make_shared<Element>(prev);
+  return std::make_shared<Element>(node->prevSibling());
 }
 
 std::shared_ptr<Element> Element::next()
 {
-  CNode next = node->nextSibling();
-  if (!next.valid())
-    return nullptr;
-  return std::make_shared<Element>(next);
+  return std::make_shared<Element>(node->nextSibling());
 }
 
 std::string Element::attr(const std::string &name)
