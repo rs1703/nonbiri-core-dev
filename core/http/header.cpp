@@ -1,5 +1,5 @@
 #include <core/core.h>
-#include <core/http/types.h>
+#include <core/http/header.h>
 #include <curl/curl.h>
 
 namespace Http

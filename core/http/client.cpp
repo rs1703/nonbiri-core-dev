@@ -64,6 +64,9 @@ std::shared_ptr<Response> Client::send(Request &request) const
   if (Utils::strcmpi(request.method, "POST") && !request.body.empty())
     setOpt(curl, CURLOPT_POSTFIELDS, request.body.c_str());
 
+  if (cookies != nullptr)
+    cookies->build(curl);
+
   Headers headers = std::move(request.headers);
   headers.join(defaultHeaders);
   headers.join(headers);
@@ -128,6 +131,11 @@ long Client::download(const std::string &url, const std::string &path) const
     fs::remove(path);
 
   return static_cast<int>(statusCode);
+}
+
+void Client::setCookies(Cookies *cookies)
+{
+  this->cookies = cookies;
 }
 
 void Client::setRateLimiter(RateLimiter *rateLimiter)

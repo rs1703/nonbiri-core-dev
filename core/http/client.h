@@ -6,14 +6,17 @@
 #include <string>
 #include <vector>
 
+#include <core/http/cookie.h>
+#include <core/http/header.h>
 #include <core/http/interceptor.h>
 #include <core/http/ratelimiter.h>
 #include <core/http/types.h>
 
 namespace Http
 {
-struct Client
+class Client
 {
+  Cookies *cookies {nullptr};
   RateLimiter *rateLimiter {nullptr};
   std::map<std::string, std::string> defaultHeaders;
   std::vector<std::shared_ptr<Interceptor>> interceptors;
@@ -27,6 +30,7 @@ public:
   std::shared_ptr<Response> send(Request &request) const;
   long download(const std::string &url, const std::string &path) const;
 
+  void setCookies(Cookies *cookies);
   void setRateLimiter(RateLimiter *rateLimiter);
   void setDefaultHeader(const std::string &name, const std::string &value);
   void removeDefaultHeader(const std::string &name);
