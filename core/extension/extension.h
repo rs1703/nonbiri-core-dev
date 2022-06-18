@@ -28,6 +28,7 @@ struct ExtensionInfo
   std::string domain {};
   std::string baseUrl {};
   std::string name {};
+  std::string description {};
   std::string language {};
   std::string version {};
   bool isNsfw {};

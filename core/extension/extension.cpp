@@ -17,6 +17,10 @@ Extension::Extension()
   name = EXTENSION_NAME;
 #endif
 
+#ifdef EXTENSION_DESCRIPTION
+  description = EXTENSION_DESCRIPTION;
+#endif
+
 #ifdef EXTENSION_LANGUAGE
   language = EXTENSION_LANGUAGE;
 #endif
@@ -25,7 +29,7 @@ Extension::Extension()
   version = EXTENSION_VERSION;
 #endif
 
-#ifdef EXTENSION_IS_NSFW
+#ifdef EXTENSION_NSFW
   isNsfw = true;
 #endif
 }
