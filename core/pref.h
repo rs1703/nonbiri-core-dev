@@ -2,6 +2,7 @@
 #define NONBIRI_CORE_PREF_H_
 
 #include <filesystem>
+#include <functional>
 #include <map>
 #include <memory>
 #include <string>
@@ -25,6 +26,9 @@ struct Info
   std::vector<std::pair<std::string, Json::Value>> options {};
 };
 
+struct Pref;
+using OnChangeFn = std::function<void(const Pref &)>;
+
 struct Pref : public Info
 {
   friend class Prefs;
@@ -33,19 +37,33 @@ struct Pref : public Info
   friend class ::Web;
 
   Pref() = delete;
-  Pref(const Info &info);
-  Pref(const Json::Value &json);
+  Pref(const Info &info, OnChangeFn onChange = nullptr);
+  Pref(const Json::Value &json, OnChangeFn onChange = nullptr);
   virtual ~Pref() = default;
 
-protected:
+  void onChange(OnChangeFn onChange);
+
+private:
   std::map<std::string, size_t> index {};
+  OnChangeFn m_onChange {nullptr};
+
+protected:
   virtual Json::Value toJson(bool full = false) const;
+};
+
+struct Input : public Pref
+{
+  Input(const Info &info, OnChangeFn onChange = nullptr);
+  Input(const Json::Value &json, OnChangeFn onChange = nullptr);
+
+protected:
+  virtual Json::Value toJson(bool full = false) const override;
 };
 
 struct Checkbox : public Pref
 {
-  Checkbox(const Info &info);
-  Checkbox(const Json::Value &json);
+  Checkbox(const Info &info, OnChangeFn onChange = nullptr);
+  Checkbox(const Json::Value &json, OnChangeFn onChange = nullptr);
 
 protected:
   virtual Json::Value toJson(bool full = false) const override;
@@ -54,8 +72,8 @@ protected:
 struct ExcludableCheckbox : public Checkbox
 {
   const std::string excludedKey {};
-  ExcludableCheckbox(const std::string &excludedKey, const Info &info);
-  ExcludableCheckbox(const std::string &excludedKey, const Json::Value &json);
+  ExcludableCheckbox(const std::string &excludedKey, const Info &info, OnChangeFn onChange = nullptr);
+  ExcludableCheckbox(const std::string &excludedKey, const Json::Value &json, OnChangeFn onChange = nullptr);
 
 protected:
   virtual Json::Value toJson(bool full = false) const override;
@@ -63,8 +81,8 @@ protected:
 
 struct Radio : public Pref
 {
-  Radio(const Info &info);
-  Radio(const Json::Value &json);
+  Radio(const Info &info, OnChangeFn onChange = nullptr);
+  Radio(const Json::Value &json, OnChangeFn onChange = nullptr);
 
 protected:
   virtual Json::Value toJson(bool full = false) const override;
@@ -72,8 +90,8 @@ protected:
 
 struct Select : public Pref
 {
-  Select(const Info &info);
-  Select(const Json::Value &json);
+  Select(const Info &info, OnChangeFn onChange = nullptr);
+  Select(const Json::Value &json, OnChangeFn onChange = nullptr);
 
 protected:
   virtual Json::Value toJson(bool full = false) const override;

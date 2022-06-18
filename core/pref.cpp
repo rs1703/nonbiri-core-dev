@@ -9,18 +9,23 @@ fs::path prefsDir {"prefs"};
 
 namespace Pref
 {
-Pref::Pref(const Info &info) : Info {info}
+Pref::Pref(const Info &info, OnChangeFn onChange) : Info {info}, m_onChange {onChange}
 {
   for (size_t i = 0; i < info.options.size(); i++)
     index[info.options[i].first] = i;
 }
 
-Pref::Pref(const Json::Value &json)
+Pref::Pref(const Json::Value &json, OnChangeFn onChange) : m_onChange {onChange}
 {
   key = json["key"].asString();
   title = json["title"].asString();
   description = json["description"].asString();
   value = json["value"];
+}
+
+void Pref::onChange(OnChangeFn onChange)
+{
+  this->m_onChange = onChange;
 }
 
 Json::Value Pref::toJson(bool full) const
@@ -45,8 +50,18 @@ Json::Value Pref::toJson(bool full) const
   return root;
 }
 
-Checkbox::Checkbox(const Info &info) : Pref {info} {}
-Checkbox::Checkbox(const Json::Value &json) : Pref {json} {}
+Input::Input(const Info &info, OnChangeFn onChange) : Pref {info, onChange} {}
+Input::Input(const Json::Value &json, OnChangeFn onChange) : Pref {json, onChange} {}
+
+Json::Value Input::toJson(bool full) const
+{
+  Json::Value root = Pref::toJson(full);
+  root["type"] = "input";
+  return root;
+}
+
+Checkbox::Checkbox(const Info &info, OnChangeFn onChange) : Pref {info, onChange} {}
+Checkbox::Checkbox(const Json::Value &json, OnChangeFn onChange) : Pref {json, onChange} {}
 
 Json::Value Checkbox::toJson(bool full) const
 {
@@ -55,9 +70,15 @@ Json::Value Checkbox::toJson(bool full) const
   return root;
 }
 
-ExcludableCheckbox::ExcludableCheckbox(const std::string &excludedKey, const Info &info) : Checkbox {info}, excludedKey {excludedKey} {}
+ExcludableCheckbox::ExcludableCheckbox(const std::string &excludedKey, const Info &info, OnChangeFn onChange) :
+  Checkbox {info, onChange},
+  excludedKey {excludedKey}
+{
+}
 
-ExcludableCheckbox::ExcludableCheckbox(const std::string &excludedKey, const Json::Value &json) : Checkbox {json}, excludedKey {excludedKey}
+ExcludableCheckbox::ExcludableCheckbox(const std::string &excludedKey, const Json::Value &json, OnChangeFn onChange) :
+  Checkbox {json, onChange},
+  excludedKey {excludedKey}
 {
 }
 
@@ -68,8 +89,8 @@ Json::Value ExcludableCheckbox::toJson(bool full) const
   return root;
 }
 
-Radio::Radio(const Info &info) : Pref {info} {}
-Radio::Radio(const Json::Value &json) : Pref {json} {}
+Radio::Radio(const Info &info, OnChangeFn onChange) : Pref {info, onChange} {}
+Radio::Radio(const Json::Value &json, OnChangeFn onChange) : Pref {json, onChange} {}
 
 Json::Value Radio::toJson(bool full) const
 {
@@ -78,8 +99,8 @@ Json::Value Radio::toJson(bool full) const
   return root;
 }
 
-Select::Select(const Info &info) : Pref {info} {}
-Select::Select(const Json::Value &json) : Pref {json} {}
+Select::Select(const Info &info, OnChangeFn onChange) : Pref {info, onChange} {}
+Select::Select(const Json::Value &json, OnChangeFn onChange) : Pref {json, onChange} {}
 
 Json::Value Select::toJson(bool full) const
 {
@@ -109,14 +130,18 @@ Prefs::Prefs(const std::string &id)
     const std::string type = pref["type"].asString();
     if (type == "checkbox") {
       const std::string excludedKey = pref["excludedKey"].asString();
-      if (excludedKey.empty())
+      if (excludedKey.empty()) {
         add(new Checkbox {pref});
-      else
+      } else {
         add(new ExcludableCheckbox {excludedKey, pref});
-    } else if (type == "radio")
+      }
+    } else if (type == "radio") {
       add(new Radio {pref});
-    else if (type == "select")
+    } else if (type == "select") {
       add(new Select {pref});
+    } else if (type == "input") {
+      add(new Input {pref});
+    }
   }
 }
 
@@ -166,7 +191,14 @@ int Prefs::set(const std::string &key, const Json::Value &value)
   if (it == index.end())
     return -1;
 
-  prefs[it->second]->value = value;
+  const auto pref = prefs[it->second];
+  if (pref->value == value)
+    return 0;
+
+  pref->value = value;
+  if (pref->m_onChange)
+    pref->m_onChange(*pref);
+
   save();
   return 0;
 }
