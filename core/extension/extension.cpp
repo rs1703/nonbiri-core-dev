@@ -169,16 +169,6 @@ std::vector<std::shared_ptr<Chapter_t>> Extension::getChapters(const std::string
   return getChapters(*manga);
 }
 
-const std::vector<std::shared_ptr<const Filter::Filter>> &Extension::getFilters() const
-{
-  return filters.get();
-}
-
-const std::map<std::string, size_t> &Extension::getFiltersIndex() const
-{
-  return filters.getIndex();
-}
-
 Json::Value ExtensionInfo::toJson() const
 {
   Json::Value root {};

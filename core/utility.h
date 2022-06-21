@@ -10,6 +10,8 @@
 #include <string>
 #include <vector>
 
+#include <json/json.h>
+
 namespace Utils
 {
 void *loadLibrary(const std::string &path);

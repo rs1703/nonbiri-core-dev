@@ -9,7 +9,6 @@
 #include <tuple>
 #include <vector>
 
-#include <core/filter.h>
 #include <core/http.h>
 #include <core/models.h>
 #include <core/parser.h>
@@ -48,7 +47,6 @@ class Extension : public ExtensionInfo
 
 protected:
   Http::Client client {};
-  Filter::Filters filters {};
 
 public:
   Extension();
@@ -95,9 +93,6 @@ private:
   virtual std::vector<std::shared_ptr<Chapter_t>> getChapters(const Manga_t &manga) const = 0;
   virtual std::vector<std::shared_ptr<Chapter_t>> getChapters(const std::string &path) const;
   virtual std::vector<std::string> getPages(const std::string &path) const = 0;
-
-  const std::vector<std::shared_ptr<const Filter::Filter>> &getFilters() const;
-  const std::map<std::string, size_t> &getFiltersIndex() const;
 };
 
 typedef Extension *(*create_t)();
