@@ -39,7 +39,25 @@ Element::Element(std::shared_ptr<CNode> node) : node {node}
 
 Element::Element(const Element &element) : Element(element.node) {}
 
-std::vector<std::shared_ptr<Element>> Element::select(const std::string &selector)
+std::vector<std::shared_ptr<Element>> Element::children() const
+{
+  std::vector<std::shared_ptr<Element>> elements {};
+  for (size_t i = 0; i < node->childNum(); i++)
+    elements.push_back(std::make_shared<Element>(node->childAt(i)));
+  return elements;
+}
+
+std::shared_ptr<Element> Element::firstChild() const
+{
+  return std::make_shared<Element>(node->childAt(0));
+}
+
+std::shared_ptr<Element> Element::lastChild() const
+{
+  return std::make_shared<Element>(node->childAt(node->childNum() - 1));
+}
+
+std::vector<std::shared_ptr<Element>> Element::select(const std::string &selector) const
 {
   CSelection nodes = node->find(selector);
   std::vector<std::shared_ptr<Element>> elements {};
@@ -48,39 +66,39 @@ std::vector<std::shared_ptr<Element>> Element::select(const std::string &selecto
   return elements;
 }
 
-std::shared_ptr<Element> Element::selectFirst(const std::string &selector)
+std::shared_ptr<Element> Element::selectFirst(const std::string &selector) const
 {
   CSelection nodes = node->find(selector);
   return std::make_shared<Element>(nodes.nodeAt(0));
 }
 
-std::shared_ptr<Element> Element::selectLast(const std::string &selector)
+std::shared_ptr<Element> Element::selectLast(const std::string &selector) const
 {
   CSelection nodes = node->find(selector);
   return std::make_shared<Element>(nodes.nodeAt(nodes.nodeNum() - 1));
 }
 
-std::shared_ptr<Element> Element::parent()
+std::shared_ptr<Element> Element::parent() const
 {
   return std::make_shared<Element>(node->parent());
 }
 
-std::shared_ptr<Element> Element::previous()
+std::shared_ptr<Element> Element::previous() const
 {
   return std::make_shared<Element>(node->prevSibling());
 }
 
-std::shared_ptr<Element> Element::next()
+std::shared_ptr<Element> Element::next() const
 {
   return std::make_shared<Element>(node->nextSibling());
 }
 
-std::string Element::attr(const std::string &name)
+std::string Element::attr(const std::string &name) const
 {
   return node->attribute(name);
 }
 
-std::vector<std::string> Element::classes()
+std::vector<std::string> Element::classes() const
 {
   const std::string class_attr = attr("class");
   if (class_attr.empty())
@@ -95,12 +113,12 @@ std::vector<std::string> Element::classes()
   return classes;
 }
 
-std::string Element::text()
+std::string Element::text() const
 {
   return node->text();
 }
 
-bool Element::isValid()
+bool Element::isValid() const
 {
   return node->valid();
 }

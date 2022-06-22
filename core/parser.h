@@ -31,19 +31,23 @@ public:
   Element(std::shared_ptr<CNode> node);
   Element(const Element &element);
 
-  std::vector<std::shared_ptr<Element>> select(const std::string &selector);
-  std::shared_ptr<Element> selectFirst(const std::string &selector);
-  std::shared_ptr<Element> selectLast(const std::string &selector);
+  std::vector<std::shared_ptr<Element>> children() const;
+  std::shared_ptr<Element> firstChild() const;
+  std::shared_ptr<Element> lastChild() const;
 
-  std::shared_ptr<Element> parent();
-  std::shared_ptr<Element> previous();
-  std::shared_ptr<Element> next();
+  std::vector<std::shared_ptr<Element>> select(const std::string &selector) const;
+  std::shared_ptr<Element> selectFirst(const std::string &selector) const;
+  std::shared_ptr<Element> selectLast(const std::string &selector) const;
 
-  std::string attr(const std::string &name);
-  std::vector<std::string> classes();
-  std::string text();
+  std::shared_ptr<Element> parent() const;
+  std::shared_ptr<Element> previous() const;
+  std::shared_ptr<Element> next() const;
 
-  bool isValid();
+  std::string attr(const std::string &name) const;
+  std::vector<std::string> classes() const;
+  std::string text() const;
+
+  bool isValid() const;
 };
 
 #endif  // NONBIRI_CORE_PARSER_H_
