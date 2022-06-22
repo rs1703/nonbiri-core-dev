@@ -80,9 +80,9 @@ std::shared_ptr<Response> Client::send(Request &request) const
     setOpt(curl, CURLOPT_POSTFIELDS, request.body.c_str());
 
   if (cookies != nullptr)
-    cookies->build(curl);
+    cookies->build(request.url, curl);
 
-  Headers requestHeaders {defaultHeaders};
+  Headers requestHeaders {headers};
   requestHeaders.join(request.headers);
 
   if (!requestHeaders.has("User-Agent"))
@@ -129,7 +129,7 @@ long Client::download(const std::string &url, const std::string &path) const
   setOpt(curl, CURLOPT_WRITEDATA, fp);
   setOpt(curl, CURLOPT_WRITEFUNCTION, NULL);
 
-  Headers headers {defaultHeaders};
+  Headers headers {headers};
   if (!headers.has("User-Agent"))
     headers.set("User-Agent", userAgent);
   setOpt(curl, CURLOPT_HTTPHEADER, headers.build());
@@ -160,16 +160,6 @@ void Client::setCookies(Cookies *cookies)
 void Client::setRateLimiter(RateLimiter *rateLimiter)
 {
   this->rateLimiter = rateLimiter;
-}
-
-void Client::setDefaultHeader(const std::string &key, const std::string &value)
-{
-  defaultHeaders[key] = value;
-}
-
-void Client::removeDefaultHeader(const std::string &key)
-{
-  defaultHeaders.erase(key);
 }
 
 void Client::addInterceptor(std::shared_ptr<Interceptor> interceptor)

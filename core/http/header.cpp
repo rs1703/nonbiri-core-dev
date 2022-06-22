@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include <core/core.h>
 #include <core/http/header.h>
 #include <curl/curl.h>
@@ -5,7 +7,7 @@
 namespace Http
 {
 Headers::Headers(const Headers &headers) : headers {headers.headers} {}
-Headers::Headers(const std::map<std::string, std::string> &headers) : headers {headers} {}
+Headers::Headers(const std::map<std::string, std::vector<std::string>> &headers) : headers {headers} {}
 
 Headers::~Headers()
 {
@@ -13,19 +15,54 @@ Headers::~Headers()
     slist_freeAll(list);
 }
 
-void Headers::join(const Headers &headers)
+Headers &Headers::join(const Headers &headers)
 {
   for (auto &header : headers.headers)
     this->headers[header.first] = header.second;
+  return *this;
 }
 
-void Headers::join(const std::map<std::string, std::string> &headers)
+Headers &Headers::join(const std::map<std::string, std::vector<std::string>> &headers)
 {
-  for (auto &header : headers)
-    this->headers[header.first] = header.second;
+  for (auto &[key, values] : headers) {
+    auto it = this->headers.find(key);
+    if (it == this->headers.end()) {
+      this->headers[key] = values;
+    } else {
+      for (auto &value : values) {
+        if (std::find(it->second.begin(), it->second.end(), value) == it->second.end())
+          this->headers[key].push_back(value);
+      }
+    }
+  }
+  return *this;
+}
+
+std::vector<std::string> Headers::get(const std::string &name) const
+{
+  auto it = headers.find(name);
+  if (it == headers.end())
+    return {};
+  return it->second;
+}
+
+void Headers::add(const std::string &name, const std::string &value)
+{
+  auto it = headers.find(name);
+  if (it == headers.end())
+    headers[name] = {value};
+  else {
+    if (std::find(it->second.begin(), it->second.end(), value) == it->second.end())
+      it->second.push_back(value);
+  }
 }
 
 void Headers::set(const std::string &name, const std::string &value)
+{
+  headers[name] = {value};
+}
+
+void Headers::set(const std::string &name, const std::vector<std::string> &value)
 {
   headers[name] = value;
 }
@@ -52,13 +89,15 @@ void Headers::clear()
 
 curl_slist *Headers::build()
 {
-  for (auto &header : headers)
-    list = slist_append(list, std::string(header.first + ": " + header.second).c_str());
+  for (const auto &[key, values] : headers) {
+    for (const auto &value : values)
+      list = slist_append(list, std::string(key + ": " + value).c_str());
+  }
   return list;
 }
 
-using iterator = std::map<std::string, std::string>::iterator;
-using const_iterator = std::map<std::string, std::string>::const_iterator;
+using iterator = std::map<std::string, std::vector<std::string>>::iterator;
+using const_iterator = std::map<std::string, std::vector<std::string>>::const_iterator;
 
 iterator Headers::begin()
 {

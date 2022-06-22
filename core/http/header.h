@@ -3,6 +3,7 @@
 
 #include <map>
 #include <string>
+#include <vector>
 
 struct curl_slist;
 
@@ -12,26 +13,29 @@ class Headers
 {
   friend class Client;
 
-  std::map<std::string, std::string> headers;
+  std::map<std::string, std::vector<std::string>> headers;
   struct curl_slist *list {nullptr};
 
 public:
   Headers() = default;
   Headers(const Headers &headers);
-  Headers(const std::map<std::string, std::string> &headers);
+  Headers(const std::map<std::string, std::vector<std::string>> &headers);
   ~Headers();
 
-  void join(const Headers &headers);
-  void join(const std::map<std::string, std::string> &headers);
+  Headers &join(const Headers &headers);
+  Headers &join(const std::map<std::string, std::vector<std::string>> &headers);
 
+  std::vector<std::string> get(const std::string &name) const;
+  void add(const std::string &name, const std::string &value);
   void set(const std::string &name, const std::string &value);
+  void set(const std::string &name, const std::vector<std::string> &value);
   void remove(const std::string &name);
   bool has(const std::string &name) const;
   bool empty() const;
   void clear();
 
-  using iterator = std::map<std::string, std::string>::iterator;
-  using const_iterator = std::map<std::string, std::string>::const_iterator;
+  using iterator = std::map<std::string, std::vector<std::string>>::iterator;
+  using const_iterator = std::map<std::string, std::vector<std::string>>::const_iterator;
 
   iterator begin();
   iterator end();

@@ -11,37 +11,43 @@ struct Cookie
 {
   friend class Cookies;
 
-  std::string hostname {};
-  bool includeSubdomains {};
-  std::string path {};
-  bool secure {};
-  int64_t maxAge {};
   std::string name {};
   std::string value {};
 
+  std::string path {};
+  std::string domain {};
+
+  bool httpOnly {};
+  bool secure {};
+  int64_t maxAge {};
+
+  static Cookie parse(const std::string &str);
+
 private:
-  char *c_str() const;
+  std::string toString() const;
 };
 
 class Cookies
 {
   friend class Client;
 
-  std::map<std::string, Cookie> cookies;
-  const std::string hostname;
+  std::map<std::string, std::map<std::string, Cookie>> cookies;
+  const std::string domain;
 
 public:
-  Cookies(const std::string &hostname);
+  Cookies(const std::string &domain);
   ~Cookies();
 
   void add(const Cookie &cookie);
   void remove(const std::string &name);
+  void remove(const std::string &domain, const std::string &name);
   bool has(const std::string &name) const;
+  bool has(const std::string &domain, const std::string &name) const;
   bool empty() const;
   void clear();
 
-  using iterator = std::map<std::string, Cookie>::iterator;
-  using const_iterator = std::map<std::string, Cookie>::const_iterator;
+  using iterator = std::map<std::string, std::map<std::string, Cookie>>::iterator;
+  using const_iterator = std::map<std::string, std::map<std::string, Cookie>>::const_iterator;
 
   iterator begin();
   iterator end();
@@ -49,7 +55,7 @@ public:
   const_iterator end() const;
 
 private:
-  void build(void *curl);
+  void build(const std::string &url, void *curl);
 };
 }  // namespace Http
 

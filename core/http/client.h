@@ -18,10 +18,10 @@ class Client
 {
   Cookies *cookies {nullptr};
   RateLimiter *rateLimiter {nullptr};
-  std::map<std::string, std::string> defaultHeaders;
   std::vector<std::shared_ptr<Interceptor>> interceptors;
 
 public:
+  Headers headers;
   Client(RateLimiter *rateLimiter = nullptr);
   ~Client();
 
@@ -32,8 +32,6 @@ public:
 
   void setCookies(Cookies *cookies);
   void setRateLimiter(RateLimiter *rateLimiter);
-  void setDefaultHeader(const std::string &name, const std::string &value);
-  void removeDefaultHeader(const std::string &name);
   void addInterceptor(std::shared_ptr<Interceptor> interceptor);
   void addInterceptor(Interceptor *interceptor);
 };
