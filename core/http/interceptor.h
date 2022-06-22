@@ -12,15 +12,14 @@ struct Interceptor
 {
   class Chain
   {
-    const Client &mClient;
-    Request &mRequest;
     std::shared_ptr<Response> mResponse;
     bool done {};
 
   public:
-    Chain(const Client &client, Request &request);
-    Request &request() const;
+    const Client &client;
+    Request &request;
 
+    Chain(const Client &client, Request &request);
     std::shared_ptr<Response> proceed();
   };
 

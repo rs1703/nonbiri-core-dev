@@ -3,12 +3,7 @@
 
 namespace Http
 {
-Interceptor::Chain::Chain(const Client &client, Request &request) : mClient(client), mRequest(request) {}
-
-Request &Interceptor::Chain::request() const
-{
-  return mRequest;
-}
+Interceptor::Chain::Chain(const Client &client, Request &request) : client(client), request(request) {}
 
 std::shared_ptr<Response> Interceptor::Chain::proceed()
 {
@@ -16,7 +11,7 @@ std::shared_ptr<Response> Interceptor::Chain::proceed()
     return mResponse;
 
   done = true;
-  mResponse = mClient.send(mRequest);
+  mResponse = client.send(request);
   return mResponse;
 }
 }  // namespace Http
