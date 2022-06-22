@@ -19,6 +19,18 @@ size_t writeCallback(void *contents, size_t size, size_t nmemb, void *userp)
   return size * nmemb;
 }
 
+size_t headerCallback(void *contents, size_t size, size_t nmemb, Http::Headers *headers)
+{
+  const size_t ret = size * nmemb;
+  const std::string header = std::string(static_cast<char *>(contents), ret - 2);
+  if (!header.empty()) {
+    const size_t colon = header.find(':');
+    if (colon != std::string::npos)
+      headers->set(header.substr(0, colon), header.substr(colon + 2));
+  }
+  return ret;
+}
+
 namespace Http
 {
 Client::Client(RateLimiter *rateLimiter) : rateLimiter {rateLimiter} {}
@@ -52,12 +64,15 @@ std::shared_ptr<Response> Client::send(Request &request) const
   if (curl == nullptr)
     throw std::runtime_error("Failed to initialize curl");
 
+  Headers responseHeaders {};
   std::string body {};
 
   setOpt(curl, CURLOPT_SSL_VERIFYPEER, 0);
   setOpt(curl, CURLOPT_SSL_VERIFYHOST, 0);
   setOpt(curl, CURLOPT_URL, request.url.c_str());
   setOpt(curl, CURLOPT_CUSTOMREQUEST, request.method.c_str());
+  setOpt(curl, CURLOPT_HEADERFUNCTION, headerCallback);
+  setOpt(curl, CURLOPT_HEADERDATA, &responseHeaders);
   setOpt(curl, CURLOPT_WRITEFUNCTION, writeCallback);
   setOpt(curl, CURLOPT_WRITEDATA, &body);
 
@@ -67,13 +82,12 @@ std::shared_ptr<Response> Client::send(Request &request) const
   if (cookies != nullptr)
     cookies->build(curl);
 
-  Headers headers = std::move(request.headers);
-  headers.join(defaultHeaders);
-  headers.join(headers);
+  Headers requestHeaders {defaultHeaders};
+  requestHeaders.join(request.headers);
 
-  if (!headers.has("User-Agent"))
-    headers.set("User-Agent", userAgent);
-  setOpt(curl, CURLOPT_HTTPHEADER, headers.build());
+  if (!requestHeaders.has("User-Agent"))
+    requestHeaders.set("User-Agent", userAgent);
+  setOpt(curl, CURLOPT_HTTPHEADER, requestHeaders.build());
 
   if (rateLimiter != nullptr)
     rateLimiter->acquire();
@@ -85,11 +99,16 @@ std::shared_ptr<Response> Client::send(Request &request) const
   }
 
   long statusCode {};
-
   getInfo(curl, CURLINFO_RESPONSE_CODE, &statusCode);
   cleanup(curl);
 
-  return std::make_shared<Response>(body, statusCode);
+  return std::shared_ptr<Response>(new Response {
+    .url = request.url,
+    .method = request.method,
+    .body = std::move(body),
+    .headers = std::move(responseHeaders),
+    .statusCode = statusCode,
+  });
 }
 
 long Client::download(const std::string &url, const std::string &path) const

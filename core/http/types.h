@@ -14,15 +14,16 @@ struct Request
   std::string method {};
   std::string body {};
   Headers headers {};
+  bool followRedirects {};
 };
 
 struct Response
 {
-  std::string body {};
-  long statusCode {};
-
-  Response(const std::string &body, long statusCode) : body {body}, statusCode {statusCode} {}
-  Response(long statusCode, const std::string &body) : body {body}, statusCode {statusCode} {}
+  const std::string url {};
+  const std::string method {};
+  const std::string body {};
+  const Headers headers {};
+  const long statusCode {};
 };
 }  // namespace Http
 
