@@ -99,8 +99,8 @@ Prefs::Prefs(const std::string &domain)
   if (!fs::exists(dir))
     fs::create_directory(dir);
 
-  path = (fs::path(dir) / (domain + ".json"));
-  if (!fs::exists(fs::path(path)))
+  path = (fs::path(dir) / (domain + ".json")).string();
+  if (!fs::exists(path))
     return;
 
   std::ifstream file {path};
